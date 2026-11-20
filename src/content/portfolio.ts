@@ -33,6 +33,23 @@ export const profile = {
     { label: "X", href: "https://x.com/theusdev_" },
   ],
   sections: ["Projetos", "Experiência", "Habilidades", "IA", "Contato"],
+  timezone: "UTC−3",
+  company: "Umobi",
+  education: {
+    institution: "Universidade Federal de Goiás",
+    short: "UFG",
+    degree: "Bacharelado em Engenharia de Computação",
+    start: 2020,
+    expected: "dezembro de 2026",
+    expectedShort: "dez. 2026",
+  },
+  // From main: content/portfolio/experience.json and profile.json.
+  milestones: [
+    { when: "2020", title: "Engenharia de Computação", place: "UFG", text: "Início do bacharelado na Universidade Federal de Goiás." },
+    { when: "2024", title: "Primeiros sistemas em produção", place: "CETT/UFG", text: "Desenvolvedor web: Django, PostgreSQL, APIs REST e apps Flutter internos." },
+    { when: "2026", title: "Desenvolvedor Full Stack", place: "Umobi", text: "Flutter em produção para Android e iOS, Angular e PHP/Laravel com Filament." },
+    { when: "Dez. 2026", title: "Formatura prevista", place: "UFG", text: "Conclusão prevista do bacharelado em Engenharia de Computação." },
+  ],
 } as const;
 
 export const project = {

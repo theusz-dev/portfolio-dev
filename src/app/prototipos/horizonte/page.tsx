@@ -1,35 +1,14 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { Cormorant_Garamond, IBM_Plex_Mono } from "next/font/google";
-import { ParticleTerrain } from "@/components/prototypes/ParticleTerrain";
+import { fontVariables } from "./_components/fonts";
+import { HorizonteHero, SmallCaps } from "./_components/HorizonteHero";
+import theme from "./_components/theme.module.css";
 import { profile, project } from "@/content/portfolio";
 import s from "./horizonte.module.css";
-
-const serif = Cormorant_Garamond({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
-  style: ["normal", "italic"],
-  variable: "--font-serif",
-});
-
-const mono = IBM_Plex_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--font-mono",
-});
 
 export const metadata: Metadata = {
   title: "A · Horizonte — Protótipo do portfólio",
 };
-
-function SmallCaps({ word }: { word: string }) {
-  return (
-    <span className={s.word}>
-      {word[0]}
-      <span className={s.smallCap}>{word.slice(1)}</span>
-    </span>
-  );
-}
 
 const story = [
   { label: "Problema", text: project.problem },
@@ -40,66 +19,8 @@ const story = [
 
 export default function HorizontePage() {
   return (
-    <main className={`${s.page} ${serif.variable} ${mono.variable}`}>
-      <section className={s.hero} aria-labelledby="horizonte-title">
-        <div className={s.frame}>
-          <ParticleTerrain className={s.canvas} />
-          <div className={s.moon} aria-hidden="true" />
-          <div className={s.vignette} aria-hidden="true" />
-
-          <header className={s.topbar}>
-            <a href="#" className={s.mark}>
-              {profile.shortName}
-            </a>
-            <nav className={s.nav} aria-label="Seções">
-              {profile.sections.map((section) => (
-                <a key={section} href={section === "Projetos" ? "#projeto" : "#"}>
-                  {section}
-                </a>
-              ))}
-            </nav>
-            <a className={s.pill} href={`mailto:${profile.email}`}>
-              {profile.ctaContact}
-            </a>
-          </header>
-
-          <div className={s.center}>
-            <p className={s.intro}>{profile.intro}</p>
-            <h1 id="horizonte-title" className={s.name}>
-              <SmallCaps word={profile.firstName} />{" "}
-              <SmallCaps word={profile.lastName} />
-            </h1>
-            <p className={s.role}>
-              <span className={s.bar} aria-hidden="true">|</span>
-              <span>{profile.role}</span>
-              <span className={s.sep} aria-hidden="true">·</span>
-              <span>{profile.roleScope}</span>
-              <span className={s.bar} aria-hidden="true">|</span>
-            </p>
-            <a className={s.ghost} href="#projeto">
-              {profile.ctaPrimary}
-            </a>
-          </div>
-
-          <footer className={s.bottombar}>
-            <ul className={s.social}>
-              {profile.social.map((item) => (
-                <li key={item.label}>
-                  <a href={item.href} target="_blank" rel="noreferrer">
-                    {item.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-            <a href="#sobre" className={s.scrollCue} aria-label="Rolar para a apresentação">
-              <span />
-            </a>
-            <p className={s.where}>
-              {profile.city} · Remoto
-            </p>
-          </footer>
-        </div>
-      </section>
+    <main className={`${theme.theme} ${fontVariables}`}>
+      <HorizonteHero />
 
       <section id="sobre" className={s.about} aria-label="Apresentação">
         <p className={s.statement}>

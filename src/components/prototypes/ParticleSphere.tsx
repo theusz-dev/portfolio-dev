@@ -12,10 +12,13 @@ const GOLDEN = Math.PI * (3 - Math.sqrt(5));
 export function ParticleSphere({
   className,
   color = "220, 226, 255",
+  wobble = 1,
 }: {
   className?: string;
   /** RGB triplet used for the dots. */
   color?: string;
+  /** Strength of the surface lobes (0 = perfect sphere). */
+  wobble?: number;
 }) {
   const dots = useRef<Dot[]>([]);
   const buckets = useRef<number[][]>([]);
@@ -53,8 +56,9 @@ export function ParticleSphere({
       for (const d of dots.current) {
         const lobe =
           1 +
-          0.055 * Math.sin(d.theta * 6 + time * 0.9) * Math.sin(d.phi * 5) +
-          0.03 * Math.sin(d.phi * 11 - time * 0.6);
+          wobble *
+            (0.055 * Math.sin(d.theta * 6 + time * 0.9) * Math.sin(d.phi * 5) +
+              0.03 * Math.sin(d.phi * 11 - time * 0.6));
         const x0 = d.x * lobe;
         const y0 = d.y * lobe;
         const z0 = d.z * lobe;

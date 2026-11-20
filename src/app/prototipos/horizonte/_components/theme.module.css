@@ -1,0 +1,28 @@
+/* Tokens and page shell shared by the Horizonte prototype and its variations. */
+
+.theme {
+  --bg: #0a0a0b;
+  --frame: #0f0f10;
+  --ink: #ece8e1;
+  --ink-soft: #c9c5bd;
+  --muted: #86837d;
+  --line: rgba(236, 232, 225, 0.14);
+  --line-strong: rgba(236, 232, 225, 0.42);
+  --glow: rgba(255, 250, 240, 0.28);
+  --serif: var(--font-serif), "Cormorant Garamond", Georgia, serif;
+  --mono: var(--font-mono), "IBM Plex Mono", ui-monospace, monospace;
+
+  min-height: 100vh;
+  background:
+    radial-gradient(60% 40% at 50% 0%, rgba(255, 255, 255, 0.06), transparent 70%),
+    var(--bg);
+  color: var(--ink);
+  font-family: var(--serif);
+  padding: 16px;
+}
+
+@media (max-width: 720px) {
+  .theme {
+    padding: 8px;
+  }
+}

@@ -1,0 +1,275 @@
+/* A3 · Observatório — original "Diário de observação" section. */
+
+.label {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.bright {
+  color: var(--ink);
+}
+
+.pill,
+.pillGhost,
+.ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  min-height: 42px;
+  padding: 0 1.6em;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink);
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease,
+    color 0.3s ease;
+}
+
+.pill {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--bg);
+}
+
+.pill:hover {
+  background: transparent;
+  color: var(--ink);
+}
+
+.pillGhost:hover,
+.ghost:hover {
+  border-color: var(--ink);
+  background: rgba(236, 232, 225, 0.06);
+}
+
+.ghost {
+  align-self: flex-start;
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  letter-spacing: 0.08em;
+  text-transform: none;
+  min-height: 52px;
+  padding: 0 2.2em;
+}
+
+/* ---------- Journal ---------- */
+
+.journal {
+  display: grid;
+  grid-template-columns: 5fr 6fr;
+  gap: clamp(40px, 7vw, 120px);
+  align-items: center;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: clamp(96px, 16vh, 180px) clamp(12px, 3vw, 32px);
+}
+
+.scope {
+  position: sticky;
+  top: 12vh;
+  align-self: start;
+}
+
+.lensWrap {
+  position: relative;
+  width: min(100%, 520px);
+  margin: 0 auto;
+  padding: 34px;
+}
+
+.lens {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 45%, #18181a, #0b0b0c 70%);
+  box-shadow:
+    0 0 0 1px var(--line-strong),
+    0 0 0 10px #0d0d0e,
+    0 0 0 11px var(--line),
+    0 0 80px rgba(255, 250, 240, 0.06);
+}
+
+.sphere {
+  position: absolute;
+  inset: 0;
+}
+
+.reticle {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  background:
+    linear-gradient(to right, transparent calc(50% - 0.5px), var(--line) calc(50% - 0.5px), var(--line) calc(50% + 0.5px), transparent calc(50% + 0.5px)),
+    linear-gradient(to bottom, transparent calc(50% - 0.5px), var(--line) calc(50% - 0.5px), var(--line) calc(50% + 0.5px), transparent calc(50% + 0.5px));
+}
+
+.reticle::before {
+  content: "";
+  position: absolute;
+  inset: 30%;
+  border-radius: 50%;
+  border: 1px dashed var(--line);
+}
+
+.reticle::after {
+  content: "";
+  position: absolute;
+  inset: 4%;
+  border-radius: 50%;
+  background: repeating-conic-gradient(from 0deg, var(--line-strong) 0deg 0.5deg, transparent 0.5deg 5deg);
+  -webkit-mask: radial-gradient(circle, transparent 0 95%, #000 95%);
+  mask: radial-gradient(circle, transparent 0 95%, #000 95%);
+}
+
+.readout {
+  position: absolute;
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+
+.rTop {
+  top: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.rBottom {
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.6em;
+}
+
+.rLeft,
+.rRight {
+  top: 50%;
+  writing-mode: vertical-rl;
+}
+
+.rLeft {
+  left: 6px;
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.rRight {
+  right: 6px;
+  transform: translateY(-50%);
+}
+
+.entries {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.statement {
+  font-size: clamp(2.2rem, 4.2vw, 3.8rem);
+  font-weight: 300;
+  line-height: 1.05;
+}
+
+.statement em {
+  color: var(--muted);
+}
+
+.log li {
+  position: relative;
+  padding: 22px 0 24px;
+  border-top: 1px solid var(--line);
+  overflow: hidden;
+}
+
+.log li:last-child {
+  border-bottom: 1px solid var(--line);
+}
+
+.logHead {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.logHead span:last-child {
+  color: var(--ink-soft);
+}
+
+.log p {
+  margin-top: 10px;
+  font-size: clamp(1.2rem, 1.7vw, 1.45rem);
+  line-height: 1.5;
+}
+
+/* scanning line passes over each entry as it appears */
+.log li::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 30%;
+  background: linear-gradient(90deg, transparent, rgba(255, 250, 240, 0.08), transparent);
+  transform: translateX(-120%);
+  pointer-events: none;
+}
+
+.log[data-armed] li {
+  opacity: 0;
+  transition: opacity 0.9s ease;
+  transition-delay: calc(var(--d) * 180ms);
+}
+
+.log[data-shown] li {
+  opacity: 1;
+}
+
+.log[data-shown] li::after {
+  animation: scan 1.6s cubic-bezier(0.5, 0, 0.3, 1) both;
+  animation-delay: calc(var(--d) * 180ms);
+}
+
+@keyframes scan {
+  to {
+    transform: translateX(420%);
+  }
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 960px) {
+  .journal {
+    grid-template-columns: 1fr;
+  }
+
+  .scope {
+    position: static;
+  }
+
+  .lensWrap {
+    width: min(100%, 420px);
+  }
+}
+
+@media (max-width: 720px) {
+  .journal {
+    padding-top: 72px;
+    padding-bottom: 96px;
+  }
+}

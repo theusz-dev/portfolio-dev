@@ -1,0 +1,383 @@
+/* A3.1 · Carta celeste — the about section as an interactive star chart. */
+
+.label {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.about {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  grid-template-areas:
+    "text chart"
+    "panel chart";
+  grid-template-rows: auto 1fr;
+  column-gap: clamp(40px, 6vw, 104px);
+  row-gap: 40px;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: clamp(96px, 16vh, 176px) clamp(12px, 3vw, 32px) clamp(80px, 12vh, 140px);
+}
+
+.text {
+  grid-area: text;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.statement {
+  font-size: clamp(2.2rem, 4vw, 3.6rem);
+  font-weight: 300;
+  line-height: 1.05;
+}
+
+.statement em {
+  color: var(--muted);
+}
+
+.summary {
+  font-size: clamp(1.15rem, 1.5vw, 1.32rem);
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 22px;
+}
+
+.ghost {
+  display: inline-flex;
+  align-items: center;
+  min-height: 50px;
+  padding: 0 2em;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  font-size: 1.05rem;
+  letter-spacing: 0.08em;
+  color: var(--ink);
+  transition:
+    border-color 0.3s ease,
+    background 0.3s ease;
+}
+
+.ghost:hover {
+  border-color: var(--ink);
+  background: rgba(236, 232, 225, 0.06);
+}
+
+.link {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  border-bottom: 1px solid var(--line-strong);
+  padding-bottom: 4px;
+  transition:
+    color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.link:hover {
+  color: var(--ink);
+  border-color: var(--ink);
+}
+
+/* ---------- Chart ---------- */
+
+.chartWrap {
+  grid-area: chart;
+  align-self: center;
+  position: relative;
+}
+
+.chartWrap::before {
+  content: "";
+  position: absolute;
+  inset: 12%;
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 250, 240, 0.05), transparent);
+}
+
+.chart {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.outer {
+  fill: none;
+  stroke: var(--line-strong);
+}
+
+.ticks {
+  fill: none;
+  stroke: var(--line-strong);
+  stroke-width: 6;
+  stroke-dasharray: 0.8 8.9;
+  opacity: 0.6;
+}
+
+.spoke {
+  stroke: rgba(236, 232, 225, 0.06);
+}
+
+.degree {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  fill: var(--muted);
+}
+
+.ring {
+  fill: none;
+  stroke: var(--line);
+  stroke-dasharray: 2 5;
+  transition: stroke 0.4s ease;
+}
+
+.ringLabel {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  fill: var(--muted);
+  transition: fill 0.4s ease;
+}
+
+.ringGroup[data-active] .ring {
+  stroke: rgba(236, 232, 225, 0.32);
+}
+
+.ringGroup[data-active] .ringLabel {
+  fill: var(--ink);
+}
+
+.constellation {
+  fill: none;
+  stroke: rgba(236, 232, 225, 0.16);
+  stroke-width: 1;
+  stroke-linejoin: round;
+}
+
+.beam {
+  stroke: rgba(255, 250, 240, 0.55);
+  stroke-width: 1;
+  stroke-dasharray: 3 4;
+  animation: beam 0.7s ease-out both;
+}
+
+@keyframes beam {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.coreDot {
+  fill: #fffaf0;
+}
+
+.coreLabel {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  fill: var(--ink-soft);
+}
+
+.star {
+  cursor: pointer;
+  outline: none;
+}
+
+.hit {
+  fill: transparent;
+}
+
+.halo {
+  fill: rgba(255, 250, 240, 0.05);
+  stroke: transparent;
+  transform-box: fill-box;
+  transform-origin: center;
+  transition:
+    fill 0.3s ease,
+    stroke 0.3s ease,
+    transform 0.3s ease;
+}
+
+.dot {
+  fill: #f4efe6;
+  filter: drop-shadow(0 0 5px rgba(255, 250, 240, 0.7));
+  animation: twinkle 4s ease-in-out infinite;
+  animation-delay: inherit;
+}
+
+.starLabel {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  fill: var(--ink-soft);
+  transition: fill 0.3s ease;
+}
+
+.star:hover .halo,
+.star:focus-visible .halo,
+.star[data-active] .halo {
+  fill: rgba(255, 250, 240, 0.12);
+  stroke: rgba(255, 250, 240, 0.6);
+  transform: scale(1.35);
+}
+
+.star:focus-visible .halo {
+  stroke-dasharray: 2 2;
+}
+
+.star[data-active] .starLabel,
+.star:hover .starLabel {
+  fill: var(--ink);
+}
+
+.star[data-active] .dot {
+  animation: none;
+  filter: drop-shadow(0 0 8px rgba(255, 250, 240, 1));
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+/* ---------- Focus panel ---------- */
+
+.panel {
+  grid-area: panel;
+  align-self: start;
+  padding: 26px 26px 22px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent 70%);
+}
+
+.panelMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.panelTitle {
+  margin-top: 10px;
+  font-size: clamp(1.8rem, 2.6vw, 2.4rem);
+  line-height: 1.05;
+  letter-spacing: 0.04em;
+  filter: drop-shadow(0 0 16px var(--glow));
+}
+
+.panelText {
+  min-height: 3em;
+  margin: 10px 0 16px;
+  font-size: 1.15rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+.clock {
+  color: var(--ink);
+}
+
+.index {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+
+.index button {
+  padding: 6px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  cursor: pointer;
+  transition:
+    color 0.25s ease,
+    border-color 0.25s ease,
+    background 0.25s ease;
+}
+
+.index button:hover,
+.index button[data-active] {
+  color: var(--ink);
+  border-color: var(--line-strong);
+  background: rgba(236, 232, 225, 0.05);
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 960px) {
+  .about {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "text"
+      "chart"
+      "panel";
+    grid-template-rows: auto;
+  }
+
+  .chartWrap {
+    width: min(100%, 560px);
+    justify-self: center;
+  }
+}
+
+@media (max-width: 720px) {
+  .about {
+    padding-top: 80px;
+    row-gap: 28px;
+  }
+
+  .chartWrap {
+    margin: 0 -6px;
+    width: calc(100% + 12px);
+  }
+
+  .starLabel {
+    font-size: 17px;
+  }
+
+  .ringLabel {
+    font-size: 13px;
+  }
+
+  .degree {
+    display: none;
+  }
+
+  .panel {
+    padding: 22px 18px 18px;
+  }
+}
