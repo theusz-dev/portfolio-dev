@@ -1,0 +1,27 @@
+/* The Firmamento layer. It never takes clicks; `difference` makes the light
+   stars dark on the light theme and keeps them from washing out details. */
+.page,
+.band {
+  pointer-events: none;
+  mix-blend-mode: difference;
+}
+
+/* Behind the page content: it shows in the masthead and between cards, never over text. */
+.page {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+}
+
+/* Behind the article title only; fades out well before the text. */
+.band {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  -webkit-mask-image: linear-gradient(to bottom, #000 35%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 35%, transparent 100%);
+}
+
+.canvas {
+  display: block;
+}

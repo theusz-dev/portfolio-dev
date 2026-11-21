@@ -1,0 +1,309 @@
+/* Post list: masthead, topic filter, card grid. Motion here is soft and
+   time-based: cards rise in on load, drawings come alive on hover. */
+
+.main {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------- Masthead ---------- */
+
+.hero {
+  padding-top: clamp(32px, 4vw, 56px);
+  padding-bottom: clamp(28px, 3vw, 40px);
+}
+
+.title {
+  margin-top: 0.875rem;
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: clamp(3.5rem, 8vw, 6rem);
+  font-weight: 300;
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+}
+
+.lead {
+  max-width: 34rem;
+  margin-top: 1.25rem;
+  color: var(--muted);
+  font-size: 1.125rem;
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+
+/* ---------- Filter ---------- */
+
+.filters {
+  margin-bottom: 28px;
+}
+
+.tabs {
+  display: flex;
+  gap: 6px;
+  margin: 0 calc(var(--gutter) * -1);
+  padding: 0 var(--gutter);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.tab {
+  padding: 0.375rem 0.75rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.tab:hover {
+  color: var(--ink);
+}
+
+.tab[aria-pressed="true"] {
+  border-color: var(--line-strong);
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.empty {
+  padding: 3rem 0;
+  color: var(--muted);
+}
+
+/* ---------- Grid ---------- */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 64px 48px;
+}
+
+.cell {
+  display: flex;
+  grid-column: span 2;
+}
+
+.cell[data-size="solo"] {
+  grid-column: 1 / -1;
+}
+
+/* ---------- Card: a plate ----------
+   The drawing is the card (a thin frame); the text sits on the page below it.
+   Faint vertical rules separate the columns. */
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+@media (min-width: 961px) {
+  .cell {
+    position: relative;
+  }
+  .cell:not(:nth-child(3n + 1)):not([data-size="solo"])::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -24px;
+    width: 1px;
+    background: var(--line);
+  }
+}
+
+.card:has(.cardLink:focus-visible) {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.panel {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  transition:
+    border-color 0.35s ease,
+    transform 0.6s var(--ease);
+  background:
+    radial-gradient(90% 70% at 50% 0%, var(--hover), transparent 70%),
+    var(--panel);
+}
+
+.panel svg {
+  opacity: 0.78;
+  transform: scale(1.001);
+  transition:
+    opacity 0.6s ease,
+    transform 1.2s var(--ease);
+}
+
+.card:hover .panel {
+  border-color: var(--line-strong);
+  transform: translateY(-3px);
+}
+
+.card:hover .panel svg,
+.card:focus-within .panel svg {
+  opacity: 1;
+  transform: scale(1.03);
+}
+
+.body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 20px 2px 0;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-size: 0.6875rem;
+}
+
+.cardTitle {
+  margin-top: 0.75rem;
+  color: var(--ink);
+  font-size: 1.125rem;
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.cardLink {
+  color: inherit;
+}
+
+.cardLink:focus-visible {
+  outline: none;
+}
+
+/* The whole card is the link. */
+.cardLink::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+}
+
+.description {
+  margin-top: 0.625rem;
+  color: var(--muted);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+
+.cardFoot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: auto;
+  padding-top: 20px;
+}
+
+.readMore {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  color: var(--ink);
+  font-size: 0.8125rem;
+  opacity: 0;
+  transform: translateX(-6px);
+  transition:
+    opacity 0.35s ease,
+    transform 0.5s var(--ease);
+}
+
+.readArrow {
+  width: 14px;
+  height: 14px;
+}
+
+.card:hover .readMore,
+.card:focus-within .readMore {
+  opacity: 1;
+  transform: none;
+}
+
+/* A lone post: drawing and text side by side. */
+.cell[data-size="solo"] .card {
+  flex-direction: row;
+}
+
+.cell[data-size="solo"] .panel {
+  flex: none;
+  width: 44%;
+  aspect-ratio: 16 / 9;
+}
+
+.cell[data-size="solo"] .body {
+  justify-content: center;
+  padding: 0 0 0 clamp(24px, 4vw, 48px);
+}
+
+.cell[data-size="solo"] .cardTitle {
+  font-size: 1.375rem;
+}
+
+.cell[data-size="solo"] .cardFoot {
+  margin-top: 0;
+  padding-top: 24px;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 960px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 56px 32px;
+  }
+  .cell {
+    grid-column: span 1;
+  }
+}
+
+@media (max-width: 760px) {
+  .cell[data-size="solo"] .card {
+    flex-direction: column;
+  }
+  .cell[data-size="solo"] .panel {
+    width: 100%;
+  }
+  .cell[data-size="solo"] .body {
+    padding: 20px 2px 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 48px;
+  }
+  .cell[data-size="solo"] {
+    grid-column: auto;
+  }
+  /* No hover on touch: show the call to action. */
+  .readMore {
+    opacity: 1;
+    transform: none;
+  }
+}
