@@ -1,0 +1,61 @@
+/* Latest posts: header and links in the AI section's grid; the plates are in plates.module.css. */
+
+.section {
+  max-width: 1340px;
+  margin: 0 auto;
+  padding: clamp(44px, 5.6vw, 88px) clamp(16px, 3.8vw, 54px);
+}
+
+.head {
+  display: grid;
+  grid-template-columns: minmax(230px, .53fr) minmax(0, 1fr) minmax(150px, .32fr);
+  gap: 24px;
+  align-items: end;
+  padding-bottom: clamp(26px, 3vw, 40px);
+  border-bottom: 1px solid var(--line);
+}
+.head h2 {
+  font: 400 clamp(2.8rem, 4.2vw, 4rem)/1 var(--serif);
+  letter-spacing: -.03em;
+  text-shadow: 0 0 28px var(--glow);
+}
+.statement {
+  grid-column: 2 / -1;
+  max-width: 24ch;
+  font: 400 clamp(1.9rem, 3vw, 2.9rem)/1.12 var(--serif);
+  letter-spacing: -.015em;
+  color: var(--ink-soft);
+}
+.statement em {
+  font-style: italic;
+  color: var(--ink);
+  text-shadow: 0 0 22px var(--glow);
+}
+
+.more {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 14px 28px;
+  margin-top: clamp(22px, 2.6vw, 32px);
+  font: 400 .72rem/1 var(--mono);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.more a {
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--line-strong);
+  transition: border-color .3s ease;
+}
+.more a:hover { border-color: var(--ink); }
+
+@media (max-width: 920px) {
+  .head { grid-template-columns: minmax(196px, .5fr) minmax(0, 1fr); }
+}
+
+@media (max-width: 680px) {
+  .head { display: block; }
+  .head h2 { font-size: clamp(2.5rem, 11vw, 3.2rem); margin-bottom: 18px; }
+  .statement { font-size: clamp(1.6rem, 7vw, 2rem); }
+  .more { justify-content: flex-start; }
+}

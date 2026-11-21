@@ -22,6 +22,7 @@ export const pt = {
     skills: "Habilidades",
     projects: "Projetos",
     ai: "IA",
+    writing: "Escrita",
     contact: "Contato",
   },
   hero: {
@@ -98,6 +99,14 @@ export const pt = {
     pipeline: "Etapas do sistema",
     demo: "Ver demo",
     code: "Código",
+  },
+  writing: {
+    title: "Escrita",
+    statement: "Escrevo sobre o que construo e o que _penso_ enquanto construo.",
+    blogs: { engineering: "Engenharia", reflections: "Reflexões" },
+    readingTime: "{minutes} min de leitura",
+    all: "Tudo em {blog}",
+    plate: "Placa",
   },
   contact: {
     title: ["Vamos", "conversar"],

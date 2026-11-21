@@ -13,6 +13,7 @@ import { Footer } from "../prototipos/horizonte/observatorio/leituras/Footer";
 import { Projects } from "../prototipos/horizonte/observatorio/leituras/projects/Projects";
 import { Reading } from "../prototipos/horizonte/observatorio/leituras/Reading";
 import { Skills } from "../prototipos/horizonte/observatorio/leituras/Skills";
+import { Writing } from "../prototipos/horizonte/observatorio/leituras/writing/Writing";
 import meridiano from "../prototipos/horizonte/observatorio/leituras/meridiano.module.css";
 import { newsreader } from "../prototipos/horizonte/observatorio/leituras/textFont";
 
@@ -51,6 +52,7 @@ export default async function Home(props: Props) {
       <Skills lang={lang} />
       <Projects lang={lang} />
       <Ai lang={lang} />
+      <Writing lang={lang} />
       <Footer lang={lang} />
     </main>
   );

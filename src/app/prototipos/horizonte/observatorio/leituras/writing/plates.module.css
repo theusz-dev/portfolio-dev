@@ -1,0 +1,208 @@
+/* Placas fotográficas: each post is a glass plate from an old observatory,
+   laid slightly askew on a light table. Hover lifts it onto the light. The
+   only ambient motion is a few stars twinkling. */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(26px, 3vw, 44px);
+  margin-top: clamp(34px, 3.8vw, 54px);
+}
+
+.plate {
+  position: relative;
+  --tilt: -0.9deg;
+}
+.plate:nth-child(2) { --tilt: 0.7deg; }
+.plate:nth-child(3) { --tilt: -0.4deg; }
+
+/* The glass: emulsion, a clear margin, and the edge of the plate. */
+.glass {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: #050505;
+  box-shadow:
+    inset 0 0 0 1px rgb(var(--ink-rgb) / .2),
+    inset 0 0 0 9px #000,
+    inset 0 0 0 10px rgb(var(--ink-rgb) / .1),
+    0 18px 40px -22px rgb(var(--light-rgb) / 0);
+  transform: rotate(var(--tilt));
+  transition: transform .6s cubic-bezier(.2, .7, .2, 1), box-shadow .6s ease;
+}
+
+/* The light table under the plate. */
+.glass::before {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  background: radial-gradient(120% 90% at 50% 110%, rgb(var(--light-rgb) / .16), transparent 70%);
+  opacity: 0;
+  transition: opacity .6s ease;
+}
+
+.sky {
+  position: absolute;
+  inset: 10px;
+  width: calc(100% - 20px);
+  height: calc(100% - 20px);
+  color: var(--light);
+  opacity: .78;
+  transition: opacity .6s ease, filter .6s ease;
+}
+
+.star { fill: currentColor; }
+.twinkle { animation: twinkle 4.5s ease-in-out infinite; }
+@keyframes twinkle {
+  0%, 100% { opacity: .2; }
+  50% { opacity: 1; }
+}
+
+.spikes path {
+  stroke: currentColor;
+  stroke-width: .4;
+  opacity: .5;
+}
+.scale line {
+  stroke: currentColor;
+  stroke-width: .5;
+  opacity: .28;
+}
+/* Emulsion grain over everything; the vignette darkens the plate's edges. */
+.grain { opacity: .55; }
+.nebula { color: var(--light); }
+
+.chart polyline,
+.chart line {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: .55;
+  stroke-dasharray: 2.5 2.5;
+  opacity: .5;
+}
+.node {
+  fill: currentColor;
+  filter: drop-shadow(0 0 1.5px rgb(var(--light-rgb) / .8));
+}
+
+/* Blink comparator: at rest only the first exposure shows; on hover the object
+   jumps between its two positions and an ink ring draws itself around it. */
+.before,
+.after { fill: currentColor; }
+.after { opacity: 0; }
+.ink {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: .8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  opacity: .9;
+  transition: stroke-dashoffset .9s cubic-bezier(.5, 0, .2, 1);
+}
+.ink + .ink { transition-delay: .7s; transition-duration: .3s; }
+.reticle {
+  stroke: currentColor;
+  stroke-width: .6;
+  opacity: .8;
+}
+
+/* Hand-written plate number and the date stamp. */
+.number,
+.stamp {
+  position: absolute;
+  z-index: 1;
+  color: var(--ink-soft);
+}
+.number {
+  top: 16px;
+  right: 18px;
+  font: italic 400 1.05rem/1 var(--serif);
+}
+.stamp {
+  bottom: 16px;
+  left: 18px;
+  font: 400 .64rem/1 var(--mono);
+  letter-spacing: .16em;
+  color: var(--muted);
+}
+
+.caption { margin-top: 22px; }
+
+.meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font: 400 .68rem/1.4 var(--mono);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.meta span:first-child { color: var(--ink-soft); }
+
+.title {
+  margin-top: 10px;
+  font: 500 clamp(1.45rem, 1.9vw, 1.85rem)/1.12 var(--serif);
+  letter-spacing: -.005em;
+  color: var(--ink);
+  transition: text-shadow .4s ease;
+}
+.link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+.link:focus-visible { outline: none; }
+.plate:has(.link:focus-visible) { outline: 2px solid var(--ink); outline-offset: 8px; }
+
+.text {
+  margin-top: 10px;
+  font: var(--text-weight) clamp(1.02rem, 1.15vw, 1.12rem)/1.5 var(--text);
+  font-size-adjust: var(--text-adjust);
+  color: var(--ink-soft);
+}
+
+/* Hover / focus: the plate straightens and lifts onto the light. */
+.plate:hover .glass,
+.plate:focus-within .glass {
+  transform: rotate(0deg) translateY(-6px);
+  box-shadow:
+    inset 0 0 0 1px rgb(var(--ink-rgb) / .45),
+    inset 0 0 0 9px #000,
+    inset 0 0 0 10px rgb(var(--ink-rgb) / .16),
+    0 24px 50px -20px rgb(var(--light-rgb) / .22);
+}
+.plate:hover .glass::before,
+.plate:focus-within .glass::before { opacity: 1; }
+.plate:hover .sky,
+.plate:focus-within .sky {
+  opacity: 1;
+  filter: drop-shadow(0 0 2px rgb(var(--light-rgb) / .7));
+}
+.plate:hover .title,
+.plate:focus-within .title { text-shadow: 0 0 22px var(--glow); }
+.plate:hover .ink,
+.plate:focus-within .ink { stroke-dashoffset: 0; }
+.plate:hover .before,
+.plate:focus-within .before { animation: blink 1.2s steps(1) infinite; }
+.plate:hover .after,
+.plate:focus-within .after { animation: blink 1.2s steps(1) infinite reverse; }
+
+@keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@media (max-width: 920px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 560px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .twinkle,
+  .plate:hover .before,
+  .plate:hover .after { animation: none; }
+}

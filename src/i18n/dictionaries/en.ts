@@ -17,6 +17,7 @@ export const en: Dictionary = {
     skills: "Skills",
     projects: "Projects",
     ai: "AI",
+    writing: "Writing",
     contact: "Contact",
   },
   hero: {
@@ -93,6 +94,14 @@ export const en: Dictionary = {
     pipeline: "System stages",
     demo: "View demo",
     code: "Code",
+  },
+  writing: {
+    title: "Writing",
+    statement: "I write about what I build and what I _think_ while building it.",
+    blogs: { engineering: "Engineering", reflections: "Reflections" },
+    readingTime: "{minutes} min read",
+    all: "All in {blog}",
+    plate: "Plate",
   },
   contact: {
     title: ["Let's", "talk"],

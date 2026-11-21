@@ -18,6 +18,7 @@ export function Footer({ lang = "pt", projectId = "projetos" }: { lang?: Locale;
     { label: t.sections.skills, href: "#habilidades" },
     { label: t.sections.projects, href: `#${projectId}` },
     { label: t.sections.ai, href: "#ia" },
+    { label: t.sections.writing, href: "#artigos" },
   ];
   return (
     <footer id="contato" className={s.footer} aria-labelledby="contato-title">
