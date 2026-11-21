@@ -130,7 +130,7 @@
   font: 400 .72rem/1.4 var(--mono);
   letter-spacing: .14em;
   text-transform: uppercase;
-  color: #bcb6aa;
+  color: #d3cdc1;
 }
 .count {
   font-size: .62rem;
@@ -154,8 +154,10 @@
   padding: 4px 14px 4px 4px;
   border: 1px solid transparent;
   border-radius: 999px;
+  --base: #131314e8;
   background:
     linear-gradient(100deg, color-mix(in srgb, var(--ray) var(--glow), transparent), #ece8e106 75%) padding-box,
+    linear-gradient(var(--base), var(--base)) padding-box,
     linear-gradient(100deg, color-mix(in srgb, var(--ray) var(--rim), transparent), #ece8e114 60%, #ece8e10a) border-box;
   white-space: nowrap;
   transition:
@@ -177,9 +179,10 @@
 }
 .icon svg { width: 16px; height: 16px; }
 .name {
-  font: 500 clamp(1.08rem, 1.25vw, 1.22rem)/1 var(--serif);
-  letter-spacing: .015em;
-  color: var(--ink);
+  font: 600 clamp(1.1rem, 1.28vw, 1.25rem)/1 var(--serif);
+  letter-spacing: .018em;
+  color: #f8f4ec;
+  text-shadow: 0 1px 2px #000c;
   transform: translateY(-.04em);
 }
 @media all {
@@ -190,6 +193,7 @@
     --rim: 68%;
     background:
       linear-gradient(90deg, transparent 0, color-mix(in srgb, var(--ray) var(--glow), transparent) 30%, #ece8e106 80%) padding-box,
+      linear-gradient(90deg, transparent 0, transparent 12%, var(--base) 36%) padding-box,
       linear-gradient(90deg, transparent 0, transparent 8%, color-mix(in srgb, var(--ray) var(--rim), transparent) 34%, #ece8e114 78%, #ece8e10a) border-box;
   }
   .group li:first-child .icon {
