@@ -260,6 +260,12 @@
   color: var(--ink-soft);
 }
 
+.note p:not(.noteTitle) {
+  font-family: var(--text);
+  font-weight: var(--text-weight);
+  font-size-adjust: var(--text-adjust);
+}
+
 .noteTitle {
   margin-bottom: 4px;
   font-family: var(--mono);
@@ -271,6 +277,9 @@
 
 .summaryLine {
   text-align: center;
+  font-family: var(--text);
+  font-weight: var(--text-weight);
+  font-size-adjust: var(--text-adjust);
   font-size: clamp(1.2rem, 1.8vw, 1.5rem);
   font-style: italic;
   color: var(--ink-soft);
@@ -300,6 +309,9 @@
 
 .notes li p:not(.noteTitle) {
   margin-top: 6px;
+  font-family: var(--text);
+  font-weight: var(--text-weight);
+  font-size-adjust: var(--text-adjust);
   font-size: 1.08rem;
   line-height: 1.45;
   color: var(--ink-soft);
@@ -349,6 +361,9 @@
 
 .sheet dd {
   margin-top: 12px;
+  font-family: var(--text);
+  font-weight: var(--text-weight);
+  font-size-adjust: var(--text-adjust);
   font-size: clamp(1.25rem, 1.9vw, 1.6rem);
   line-height: 1.4;
 }

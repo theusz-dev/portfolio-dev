@@ -8,6 +8,8 @@ import { Ai } from "../Ai";
 import { Experience } from "../Experience";
 import { Reading } from "../Reading";
 import { Skills } from "../Skills";
+import meridiano from "../meridiano.module.css";
+import { newsreader } from "../textFont";
 import { variants, type Variant } from "../variants";
 
 export const dynamicParams = false;
@@ -32,7 +34,7 @@ export default async function ReadingPage(props: Props) {
   const variant = await variantFrom(props);
   const isMeridiano = variant === "meridiano";
   return (
-    <main className={theme.theme + " " + fontVariables}>
+    <main className={[theme.theme, fontVariables, isMeridiano && `${newsreader.variable} ${meridiano.meridiano}`].filter(Boolean).join(" ")}>
       <HorizonteHero sectionLinks={isMeridiano ? { Experiência: "#experiencia", Habilidades: "#habilidades", IA: "#ia" } : undefined} />
       <Reading variant={variant} />
       {isMeridiano && (

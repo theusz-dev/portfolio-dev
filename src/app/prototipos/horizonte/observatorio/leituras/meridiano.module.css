@@ -1,0 +1,13 @@
+/* Readability: Newsreader for running text, brighter secondary inks.
+   Only the sections after the hero change; the hero keeps its own look. */
+.meridiano {
+  --text: var(--font-newsreader), "Newsreader", Georgia, serif;
+  /* Scale Newsreader to Cormorant's x-height (≈ 0.39 of the font size), so the
+     copy keeps its size instead of growing ~10% with Newsreader's larger x-height. */
+  --text-adjust: 0.39;
+}
+
+.meridiano > :not(:first-child) {
+  --ink-soft: #d6d2ca;
+  --muted: #a39f97;
+}

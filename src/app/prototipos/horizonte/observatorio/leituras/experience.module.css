@@ -20,7 +20,8 @@
 }
 
 .intro > p, .description {
-  font: 400 clamp(1.2rem, 1.5vw, 1.4rem)/1.48 var(--serif);
+  font: var(--text-weight) clamp(1.2rem, 1.5vw, 1.4rem)/1.48 var(--text);
+  font-size-adjust: var(--text-adjust);
   color: var(--ink-soft);
 }
 

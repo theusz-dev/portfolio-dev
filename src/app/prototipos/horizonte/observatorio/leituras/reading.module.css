@@ -20,6 +20,9 @@
 .reading h2 em { font-weight: 300; color: var(--ink-soft); }
 .lead, .letter > p:not(.label), .passage p, .fieldNotes p {
   color: var(--ink-soft);
+  font-family: var(--text);
+  font-weight: var(--text-weight);
+  font-size-adjust: var(--text-adjust);
   font-size: clamp(1.2rem, 1.62vw, 1.48rem);
   line-height: 1.45;
 }

@@ -11,6 +11,10 @@
   --glow: rgba(255, 250, 240, 0.28);
   --serif: var(--font-serif), "Cormorant Garamond", Georgia, serif;
   --mono: var(--font-mono), "IBM Plex Mono", ui-monospace, monospace;
+  /* Running text (paragraphs, lists, quotes). Titles keep --serif. */
+  --text: var(--serif);
+  --text-weight: 400;
+  --text-adjust: none;
 
   min-height: 100vh;
   background:
