@@ -11,3 +11,18 @@
   --ink-soft: #d6d2ca;
   --muted: #a39f97;
 }
+
+/* Extra breathing room between the sections after "Sobre". Only anchored
+   sections ([id]) get it, so the project's pinned scene and its sheet stay
+   together. The footer keeps its own top margin plus the same extra gap. */
+.meridiano {
+  --section-gap: clamp(28px, 4vw, 64px);
+}
+
+.meridiano > [id]:nth-child(n + 3):not(footer) {
+  margin-top: var(--section-gap);
+}
+
+.meridiano > footer {
+  margin-top: calc(clamp(24px, 4vw, 56px) + var(--section-gap));
+}
