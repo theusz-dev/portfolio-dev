@@ -28,7 +28,8 @@ export default async function LangLayout({ children, params }: Props) {
   const { lang } = await params;
   if (!hasLocale(lang)) notFound();
   return (
-    <html lang={htmlLang[lang]}>
+    // suppressHydrationWarning: the blogs set `data-theme` here before hydration (src/components/blog/theme.tsx).
+    <html lang={htmlLang[lang]} suppressHydrationWarning>
       <body>{children}</body>
     </html>
   );
