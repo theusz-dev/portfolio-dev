@@ -36,7 +36,7 @@ export default async function ReadingPage(props: Props) {
   const isMeridiano = variant === "meridiano";
   return (
     <main className={[theme.theme, fontVariables, isMeridiano && `${newsreader.variable} ${meridiano.meridiano}`].filter(Boolean).join(" ")}>
-      <HorizonteHero sectionLinks={isMeridiano ? { Experiência: "#experiencia", Habilidades: "#habilidades", IA: "#ia", Contato: "#contato" } : undefined} />
+      <HorizonteHero sectionLinks={isMeridiano ? { experience: "#experiencia", skills: "#habilidades", ai: "#ia", contact: "#contato" } : undefined} />
       <Reading variant={variant} />
       {isMeridiano && (
         <>
@@ -48,7 +48,7 @@ export default async function ReadingPage(props: Props) {
       {isMeridiano && (
         <>
           <Ai />
-          <Footer />
+          <Footer projectId="projeto" />
         </>
       )}
     </main>

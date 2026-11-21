@@ -1,15 +1,18 @@
 import experience from "@/content/experience.json";
+import { getDictionary } from "@/i18n/dictionaries";
+import type { Locale } from "@/i18n/config";
 import s from "./experience.module.css";
 import { ExperienceRidge } from "./ExperienceRidge";
 
-import { Month, notes } from "./experienceDetails";
+import { Month, getNotes } from "./experienceDetails";
 
 function monthIndex(value: string) {
   const [year, month] = value.split("-").map(Number);
   return year * 12 + month - 1;
 }
 
-export function PeriodChart() {
+export function PeriodChart({ lang = "pt" }: { lang?: Locale }) {
+  const notes = getNotes(lang);
   const firstYear = Math.min(...experience.map(({ period }) => Number(period.start.slice(0, 4))));
   const lastYear = Math.max(...experience.map(({ period }) => Number(period.end.slice(0, 4))));
   const years = Array.from({ length: lastYear - firstYear + 1 }, (_, i) => firstYear + i);
@@ -39,25 +42,27 @@ export function PeriodChart() {
   );
 }
 
-export function Experience() {
+export function Experience({ lang = "pt" }: { lang?: Locale }) {
+  const t = getDictionary(lang);
+  const notes = getNotes(lang);
   return (
     <section className={s.section} id="experiencia" aria-labelledby="experience-title">
       <div className={s.layout}>
         <header className={s.intro}>
-          <h2 id="experience-title">Experiência</h2>
-          <p>Enquanto desenvolvia sistemas web no CETT/UFG, comecei a criar aplicativos como freelancer na Umobi. Depois, passei a trabalhar lá como desenvolvedor full stack.</p>
-          <PeriodChart />
+          <h2 id="experience-title">{t.sections.experience}</h2>
+          <p>{t.experience.intro}</p>
+          <PeriodChart lang={lang} />
         </header>
         <ExperienceRidge />
-        <ol className={s.timeline} aria-label="Experiências da mais recente à mais antiga">
+        <ol className={s.timeline} aria-label={t.experience.timelineLabel}>
           {experience.map(({ id, role, company, period, stack, highlights }) => (
             <li className={s.entry} key={id}>
               <div className={s.entryMeta}>
                 <p className={s.company}>{company}</p>
-                <p className={s.period}><Month value={period.start} /> — <Month value={period.end} /></p>
+                <p className={s.period}><Month value={period.start} lang={lang} /> — <Month value={period.end} lang={lang} /></p>
               </div>
-              <h3>{role.pt}</h3>
-              <p className={s.description}>{notes[id]?.summary ?? highlights.pt[0]}</p>
+              <h3>{role[lang]}</h3>
+              <p className={s.description}>{notes[id]?.summary ?? highlights[lang][0]}</p>
               <p className={s.stack}>{stack.join(" · ")}</p>
             </li>
           ))}

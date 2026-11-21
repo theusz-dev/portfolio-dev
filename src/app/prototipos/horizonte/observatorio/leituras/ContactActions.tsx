@@ -1,10 +1,14 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { profile } from "@/content/portfolio";
+import type { Profile } from "@/content/portfolio";
+import type { Dictionary } from "@/i18n/dictionaries";
 import s from "./contact.module.css";
 
-const whatsapp = `https://wa.me/${profile.whatsapp.number}?text=${encodeURIComponent(profile.whatsapp.message)}`;
+type Props = {
+  profile: Pick<Profile, "email" | "whatsapp" | "whatsappMessage" | "resume" | "ctaResume">;
+  t: Dictionary["contact"];
+};
 
 function copyWithSelection(text: string) {
   const field = document.createElement("textarea");
@@ -34,17 +38,18 @@ async function copyText(text: string) {
 }
 
 /** Contact buttons: e-mail and WhatsApp (open, or copy the address/number) and the CV. */
-export function ContactActions() {
+export function ContactActions({ profile, t }: Props) {
+  const whatsapp = `https://wa.me/${profile.whatsapp.number}?text=${encodeURIComponent(profile.whatsappMessage)}`;
   return (
     <div className={s.actions}>
       <CopySplit
         primary
         href={`mailto:${profile.email}`}
         icon={<MailIcon />}
-        label="Enviar e-mail"
+        label={t.sendEmail}
         value={profile.email}
-        copyLabel="Copiar e-mail"
-        doneLabel="E-mail copiado"
+        copyLabel={t.copyEmail}
+        doneLabel={t.emailCopied}
       />
       <CopySplit
         href={whatsapp}
@@ -52,8 +57,8 @@ export function ContactActions() {
         icon={<WhatsAppIcon />}
         label="WhatsApp"
         value={profile.whatsapp.display}
-        copyLabel="Copiar número"
-        doneLabel="Número copiado"
+        copyLabel={t.copyNumber}
+        doneLabel={t.numberCopied}
       />
       <a className={`${s.button} ${s.ghost}`} href={profile.resume} download>
         <DownloadIcon />

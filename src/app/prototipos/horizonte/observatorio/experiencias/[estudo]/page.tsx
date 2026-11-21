@@ -29,7 +29,7 @@ export default async function ExperiencePage(props: Props) {
   const study = await studyFrom(props);
   return (
     <main className={theme.theme + " " + fontVariables}>
-      <HorizonteHero sectionLinks={{ Experiência: "#experiencia" }} />
+      <HorizonteHero sectionLinks={{ experience: "#experiencia" }} />
       <Reading variant="meridiano" />
       <ExperienceStudy study={study} />
       <ObservatorioProject />

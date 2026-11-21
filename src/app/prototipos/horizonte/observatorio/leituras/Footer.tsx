@@ -1,20 +1,24 @@
+import { Fragment } from "react";
 import { LocalClock } from "@/components/prototypes/LocalClock";
 import { ParticleNightfall } from "@/components/prototypes/ParticleNightfall";
-import { profile } from "@/content/portfolio";
+import { getProfile } from "@/content/portfolio";
+import type { Locale } from "@/i18n/config";
+import { getDictionary } from "@/i18n/dictionaries";
 import { SmallCaps } from "../../_components/HorizonteHero";
 import { ContactActions } from "./ContactActions";
 import s from "./footer.module.css";
 
-const sections = [
-  { label: "Sobre", href: "#sobre" },
-  { label: "Experiência", href: "#experiencia" },
-  { label: "Habilidades", href: "#habilidades" },
-  { label: "Projetos", href: "#projeto" },
-  { label: "IA", href: "#ia" },
-];
-
 /** Closing frame: the hero's dunes, seen at nightfall, with the contact essentials. */
-export function Footer() {
+export function Footer({ lang = "pt", projectId = "projetos" }: { lang?: Locale; projectId?: string }) {
+  const profile = getProfile(lang);
+  const t = getDictionary(lang);
+  const sections = [
+    { label: t.sections.about, href: "#sobre" },
+    { label: t.sections.experience, href: "#experiencia" },
+    { label: t.sections.skills, href: "#habilidades" },
+    { label: t.sections.projects, href: `#${projectId}` },
+    { label: t.sections.ai, href: "#ia" },
+  ];
   return (
     <footer id="contato" className={s.footer} aria-labelledby="contato-title">
       <div className={s.frame}>
@@ -26,24 +30,29 @@ export function Footer() {
             <i aria-hidden="true" /> {profile.availability}
           </p>
           <h2 id="contato-title" className={s.title}>
-            <SmallCaps word="Vamos" /> <SmallCaps word="conversar" />
+            {t.contact.title.map((word, i) => (
+              <Fragment key={word}>
+                {i > 0 && " "}
+                <SmallCaps word={word} />
+              </Fragment>
+            ))}
           </h2>
           <a className={s.email} href={`mailto:${profile.email}`}>
             {profile.email}
           </a>
-          <ContactActions />
+          <ContactActions profile={profile} t={t.contact} />
         </div>
 
         <div className={s.bottom}>
           <div className={s.bar}>
-            <nav className={s.links} aria-label="Seções do portfólio">
+            <nav className={s.links} aria-label={t.contact.navLabel}>
               {sections.map(({ label, href }) => (
                 <a key={href} href={href}>
                   {label}
                 </a>
               ))}
             </nav>
-            <a href="#" className={s.top} aria-label="Voltar ao topo">
+            <a href="#" className={s.top} aria-label={t.contact.backToTop}>
               <span />
             </a>
             <ul className={s.links}>

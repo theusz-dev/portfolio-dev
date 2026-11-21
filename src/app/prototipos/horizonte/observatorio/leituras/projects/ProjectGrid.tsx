@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import type { Project } from "@/content/projects";
+import type { Locale } from "@/i18n/config";
+import type { Dictionary } from "@/i18n/dictionaries";
 import { Media } from "./Media";
 import { ProjectLinks, projectHref, toList } from "./ProjectLinks";
 import s from "./projects.module.css";
@@ -16,7 +18,19 @@ const pad = (n: number) => String(n).padStart(2, "0");
  * reveals the rest (remembered for the session, so coming back from a
  * project page keeps the list as it was). Each card opens its own page.
  */
-export function ProjectGrid({ projects, featured }: { projects: Project[]; featured: number }) {
+type Text = Dictionary["projects"];
+
+export function ProjectGrid({
+  projects,
+  featured,
+  lang,
+  t,
+}: {
+  projects: Project[];
+  featured: number;
+  lang: Locale;
+  t: Text;
+}) {
   const [expanded, setExpanded] = useState(false);
   const extra = projects.length - featured;
 
@@ -44,7 +58,7 @@ export function ProjectGrid({ projects, featured }: { projects: Project[]; featu
       <ul className={s.grid}>
         {projects.map((project, i) => (
           <li key={project.id} hidden={!expanded && i >= featured} className={s.item}>
-            <Card project={project} number={i + 1} />
+            <Card project={project} number={i + 1} lang={lang} t={t} />
           </li>
         ))}
       </ul>
@@ -53,11 +67,11 @@ export function ProjectGrid({ projects, featured }: { projects: Project[]; featu
         <div className={s.more}>
           {expanded ? (
             <button type="button" className={s.moreButton} onClick={() => toggle(false)}>
-              Mostrar menos
+              {t.showLess}
             </button>
           ) : (
             <button type="button" className={s.moreButton} onClick={() => toggle(true)}>
-              Ver mais projetos <span>+{pad(extra)}</span>
+              {t.showMore} <span>+{pad(extra)}</span>
             </button>
           )}
         </div>
@@ -66,7 +80,7 @@ export function ProjectGrid({ projects, featured }: { projects: Project[]; featu
   );
 }
 
-function Card({ project, number }: { project: Project; number: number }) {
+function Card({ project, number, lang, t }: { project: Project; number: number; lang: Locale; t: Text }) {
   const covers = toList(project.cover);
   const shownStack = project.stack.slice(0, STACK_ON_CARD);
   const hiddenStack = project.stack.length - shownStack.length;
@@ -91,13 +105,13 @@ function Card({ project, number }: { project: Project; number: number }) {
           <span>{pad(number)}</span> {project.year} · {project.status}
         </p>
         <h3 className={s.cardTitle}>
-          <Link href={projectHref(project.id)} className={s.cardOpen} data-project-card={project.id}>
+          <Link href={projectHref(lang, project.id)} className={s.cardOpen} data-project-card={project.id}>
             {project.title}
           </Link>
         </h3>
         <p className={s.summary}>{project.summary}</p>
 
-        <ul className={s.chips} aria-label="Tecnologias">
+        <ul className={s.chips} aria-label={t.stack}>
           {shownStack.map((tech) => (
             <li key={tech}>{tech}</li>
           ))}
@@ -105,9 +119,9 @@ function Card({ project, number }: { project: Project; number: number }) {
         </ul>
 
         <div className={s.cardFoot}>
-          <ProjectLinks project={project} variant="text" />
+          <ProjectLinks project={project} variant="text" t={t} />
           <span className={s.details} aria-hidden="true">
-            Ver projeto →
+            {t.open} →
           </span>
         </div>
       </div>

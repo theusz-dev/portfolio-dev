@@ -1,45 +1,83 @@
-// Shared content for the three portfolio prototypes.
-// Copied from `main` (content/portfolio/profile.json, projects.json and messages/pt.json)
-// so every proposal shows exactly the same introduction and project.
+import type { Locale } from "@/i18n/config";
 
-export const profile = {
+// Profile shown across the site, in every language (`getProfile`).
+// `project` below is the single project the early prototypes showcase.
+
+/** Profile data that reads the same in every language. */
+const base = {
   name: "Matheus Fernandes da Silva",
   shortName: "Matheus Fernandes",
   firstName: "Matheus",
   lastName: "Fernandes",
   initials: "MF",
-  intro: "Olá, eu sou o",
-  role: "Desenvolvedor Full Stack",
-  roleScope: "Web & Mobile",
-  statement: "Código com propósito.",
-  statementAccent: "Produtos com identidade.",
-  summary:
-    "Sou desenvolvedor full stack e estudante de Engenharia de Computação na UFG. Na Umobi, desenvolvi aplicativos e interfaces web em produção. Hoje busco uma oportunidade 100% remota.",
-  availability: "Disponível para trabalho 100% remoto",
-  location: "Goiânia, GO · Brasil",
   city: "Goiânia",
-  coordinates: "16°40′S 49°15′O",
-  yearsExperience: "2+ anos",
   topStack: ["TypeScript", "React / Next.js", "Flutter", "Python / Django", "Laravel"],
   email: "matheustae@hotmail.com",
-  whatsapp: {
-    number: "5562994395965",
-    display: "+55 62 99439-5965",
-    message: "Olá, Matheus! Vi seu portfólio e gostaria de conversar.",
-  },
-  resume: "/resume.pdf",
-  ctaPrimary: "Explorar projetos",
-  ctaResume: "Baixar CV",
-  ctaContact: "Vamos conversar",
+  whatsapp: { number: "5562994395965", display: "+55 62 99439-5965" },
   social: [
     { label: "GitHub", href: "https://github.com/matheusz-nied" },
     { label: "LinkedIn", href: "https://www.linkedin.com/in/matheusz-nied/" },
     { label: "Instagram", href: "https://www.instagram.com/theusz.dev/" },
     { label: "X", href: "https://x.com/theusdev_" },
   ],
-  sections: ["Projetos", "Experiência", "Habilidades", "IA", "Contato"],
   timezone: "UTC−3",
   company: "Umobi",
+};
+
+/** Profile text per language. Both entries must have the same keys. */
+const text = {
+  pt: {
+    intro: "Olá, eu sou o",
+    role: "Desenvolvedor Full Stack",
+    roleScope: "Web & Mobile",
+    statement: "Código com propósito.",
+    statementAccent: "Produtos com identidade.",
+    summary:
+      "Sou desenvolvedor full stack e estudante de Engenharia de Computação na UFG. Na Umobi, desenvolvi aplicativos e interfaces web em produção. Hoje busco uma oportunidade 100% remota.",
+    availability: "Disponível para trabalho 100% remoto",
+    location: "Goiânia, GO · Brasil",
+    coordinates: "16°40′S 49°15′O",
+    yearsExperience: "2+ anos",
+    // When there is an English CV, put it in public/ and point `en.resume` at it.
+    resume: "/resume.pdf",
+    ctaPrimary: "Explorar projetos",
+    ctaResume: "Baixar CV",
+    ctaContact: "Vamos conversar",
+    whatsappMessage: "Olá, Matheus! Vi seu portfólio e gostaria de conversar.",
+  },
+  en: {
+    intro: "Hi, I'm",
+    role: "Full-Stack Developer",
+    roleScope: "Web & Mobile",
+    statement: "Code with purpose.",
+    statementAccent: "Products with identity.",
+    summary:
+      "I'm a full-stack developer and Computer Engineering student at UFG. At Umobi, I built apps and web interfaces used in production. I'm now looking for a fully remote role.",
+    availability: "Available for fully remote work",
+    location: "Goiânia, GO · Brazil",
+    coordinates: "16°40′S 49°15′W",
+    yearsExperience: "2+ years",
+    resume: "/resume.pdf",
+    ctaPrimary: "Explore projects",
+    ctaResume: "Download CV",
+    ctaContact: "Let's talk",
+    whatsappMessage: "Hi Matheus! I saw your portfolio and would like to talk.",
+  },
+} satisfies Record<Locale, unknown>;
+
+export function getProfile(lang: Locale) {
+  return { ...base, ...text[lang] };
+}
+
+export type Profile = ReturnType<typeof getProfile>;
+
+/**
+ * Portuguese profile for the `/prototipos` pages (Portuguese only), with the
+ * fields only they use. The real site calls `getProfile(lang)`.
+ */
+export const profile = {
+  ...getProfile("pt"),
+  sections: ["Projetos", "Experiência", "Habilidades", "IA", "Contato"],
   education: {
     institution: "Universidade Federal de Goiás",
     short: "UFG",
@@ -55,7 +93,7 @@ export const profile = {
     { when: "2026", title: "Desenvolvedor Full Stack", place: "Umobi", text: "Flutter em produção para Android e iOS, Angular e PHP/Laravel com Filament." },
     { when: "Dez. 2026", title: "Formatura prevista", place: "UFG", text: "Conclusão prevista do bacharelado em Engenharia de Computação." },
   ],
-} as const;
+};
 
 export const project = {
   id: "orbit",

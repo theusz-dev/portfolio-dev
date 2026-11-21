@@ -112,6 +112,38 @@
   color: var(--muted);
 }
 
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* PT / EN: quiet, like the nav; the current language is lit. */
+.language {
+  display: flex;
+  align-items: center;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+}
+
+.language a {
+  padding: 6px 2px;
+  transition: color 0.3s ease;
+}
+
+.language a + a::before {
+  content: "/";
+  margin: 0 0.5em;
+  color: var(--muted);
+  opacity: 0.5;
+}
+
+.language a:hover,
+.language a[aria-current] {
+  color: var(--ink);
+}
+
 .nav a,
 .social a {
   transition: color 0.3s ease;

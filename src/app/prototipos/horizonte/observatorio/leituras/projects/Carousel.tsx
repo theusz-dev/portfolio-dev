@@ -3,13 +3,15 @@
 import Image from "next/image";
 import { useRef, useState } from "react";
 import type { ProjectMedia } from "@/content/projects";
+import { format } from "@/i18n/config";
+import type { Dictionary } from "@/i18n/dictionaries";
 import { Media } from "./Media";
 import s from "./projects.module.css";
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
 /** Media carousel: arrows, thumbnails, keyboard (← →) and swipe. */
-export function Carousel({ media, title }: { media: ProjectMedia[]; title: string }) {
+export function Carousel({ media, title, t }: { media: ProjectMedia[]; title: string; t: Dictionary["carousel"] }) {
   const [index, setIndex] = useState(0);
   const count = media.length;
   const swipe = useRef<number | null>(null);
@@ -20,8 +22,8 @@ export function Carousel({ media, title }: { media: ProjectMedia[]; title: strin
   return (
     <section
       className={s.carousel}
-      aria-roledescription="carrossel"
-      aria-label={`Imagens de ${title}`}
+      aria-roledescription={t.role}
+      aria-label={format(t.label, { title })}
       onKeyDown={(event) => {
         if (count < 2) return;
         if (event.key === "ArrowRight") go(index + 1);
@@ -47,8 +49,8 @@ export function Carousel({ media, title }: { media: ProjectMedia[]; title: strin
             data-active={i === index}
             inert={i !== index}
             role="group"
-            aria-roledescription="slide"
-            aria-label={`${i + 1} de ${count}`}
+            aria-roledescription={t.slide}
+            aria-label={format(t.position, { index: i + 1, count })}
           >
             <Media media={item} sizes="(max-width: 900px) 100vw, 1100px" className={s.slideMedia} active={i === index} />
           </div>
@@ -56,10 +58,10 @@ export function Carousel({ media, title }: { media: ProjectMedia[]; title: strin
 
         {count > 1 && (
           <>
-            <button type="button" className={`${s.arrow} ${s.arrowPrev}`} onClick={() => go(index - 1)} aria-label="Imagem anterior">
+            <button type="button" className={`${s.arrow} ${s.arrowPrev}`} onClick={() => go(index - 1)} aria-label={t.previous}>
               ←
             </button>
-            <button type="button" className={`${s.arrow} ${s.arrowNext}`} onClick={() => go(index + 1)} aria-label="Próxima imagem">
+            <button type="button" className={`${s.arrow} ${s.arrowNext}`} onClick={() => go(index + 1)} aria-label={t.next}>
               →
             </button>
             <p className={s.counter} aria-live="polite">
@@ -78,7 +80,7 @@ export function Carousel({ media, title }: { media: ProjectMedia[]; title: strin
               <button
                 type="button"
                 onClick={() => go(i)}
-                aria-label={`Mostrar imagem ${i + 1}: ${item.alt}`}
+                aria-label={format(t.show, { index: i + 1, alt: item.alt })}
                 aria-current={i === index}
               >
                 {item.type === "image" ? (

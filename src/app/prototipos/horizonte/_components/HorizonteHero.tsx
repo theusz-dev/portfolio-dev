@@ -1,5 +1,8 @@
 import { ParticleTerrain } from "@/components/prototypes/ParticleTerrain";
-import { profile } from "@/content/portfolio";
+import { getProfile } from "@/content/portfolio";
+import type { Locale } from "@/i18n/config";
+import { getDictionary } from "@/i18n/dictionaries";
+import { LanguageSwitch } from "@/i18n/LanguageSwitch";
 import s from "./hero.module.css";
 
 export function SmallCaps({ word, className }: { word: string; className?: string }) {
@@ -12,16 +15,25 @@ export function SmallCaps({ word, className }: { word: string; className?: strin
 }
 
 /** The approved Horizonte opening, shared by every variation. */
+const navSections = ["projects", "experience", "skills", "ai", "contact"] as const;
+
 export function HorizonteHero({
   aboutId = "sobre",
   projectId = "projeto",
   sectionLinks,
+  lang = "pt",
+  languageSwitch = false,
 }: {
   aboutId?: string;
   projectId?: string;
-  sectionLinks?: Partial<Record<(typeof profile.sections)[number], string>>;
+  sectionLinks?: Partial<Record<(typeof navSections)[number], string>>;
+  lang?: Locale;
+  /** Show PT / EN (only on the real site; the prototypes are Portuguese only). */
+  languageSwitch?: boolean;
 }) {
-  const destinations = { Projetos: `#${projectId}`, ...sectionLinks };
+  const profile = getProfile(lang);
+  const t = getDictionary(lang);
+  const destinations: Partial<Record<(typeof navSections)[number], string>> = { projects: `#${projectId}`, ...sectionLinks };
   return (
     <section className={s.hero} aria-labelledby="horizonte-title">
       <div className={s.frame}>
@@ -33,16 +45,21 @@ export function HorizonteHero({
           <a href="#" className={s.mark}>
             {profile.shortName}
           </a>
-          <nav className={s.nav} aria-label="Seções">
-            {profile.sections.map((section) => (
+          <nav className={s.nav} aria-label={t.hero.navLabel}>
+            {navSections.map((section) => (
               <a key={section} href={destinations[section] ?? "#"}>
-                {section}
+                {t.sections[section]}
               </a>
             ))}
           </nav>
-          <a className={s.pill} href={`mailto:${profile.email}`}>
-            {profile.ctaContact}
-          </a>
+          <div className={s.actions}>
+            {languageSwitch && (
+              <LanguageSwitch className={s.language} lang={lang} label={t.language.label} names={t.language.names} />
+            )}
+            <a className={s.pill} href={`mailto:${profile.email}`}>
+              {profile.ctaContact}
+            </a>
+          </div>
         </header>
 
         <div className={s.center}>
@@ -78,10 +95,10 @@ export function HorizonteHero({
               </li>
             ))}
           </ul>
-          <a href={`#${aboutId}`} className={s.scrollCue} aria-label="Rolar para a apresentação">
+          <a href={`#${aboutId}`} className={s.scrollCue} aria-label={t.hero.scrollCue}>
             <span />
           </a>
-          <p className={s.where}>{profile.city} · Remoto</p>
+          <p className={s.where}>{profile.city} · {t.hero.remote}</p>
         </footer>
       </div>
     </section>

@@ -2,17 +2,23 @@ import type { CSSProperties } from "react";
 import aiProjects from "@/content/ai-projects.json";
 import iconPaths from "@/content/skill-icon-paths.json";
 import skills from "@/content/skills.json";
+import type { Locale } from "@/i18n/config";
+import { getDictionary } from "@/i18n/dictionaries";
 import { Dunes } from "./Dunes";
 import { MobileDunes } from "./MobileDunes";
 import s from "./skills.module.css";
 
 const agentTools = [...new Set(aiProjects.flatMap(project => project.tools))];
-const groups = skills.map(({ id, category, items }) => ({
-  id,
-  title: category.pt,
-  items: id === "tools" ? items.filter(tool => !agentTools.includes(tool)) : items,
-}));
-groups.push({ id: "ia", title: "IA no desenvolvimento", items: agentTools });
+const getGroups = (lang: Locale) => [
+  ...skills.map(({ id, category, items }) => ({
+    id,
+    title: category[lang],
+    items: id === "tools" ? items.filter(tool => !agentTools.includes(tool)) : items,
+  })),
+  { id: "ia", title: getDictionary(lang).skills.aiGroup, items: agentTools },
+];
+// Row count is the same in every language (the prism geometry depends on it).
+const groupCount = skills.length + 1;
 
 // Local Simple Icons silhouettes from the original portfolio (CC0).
 const symbols: Record<string, string> = {
@@ -234,17 +240,18 @@ function Glass() {
 function Prism() {
   return (
     <div className={s.prism} aria-hidden="true">
-      <Dunes colors={rayColors} count={groups.length} />
+      <Dunes colors={rayColors} count={groupCount} />
       <Glass />
     </div>
   );
 }
 
-export function Skills() {
+export function Skills({ lang = "pt" }: { lang?: Locale }) {
+  const groups = getGroups(lang);
   return (
     <section id="habilidades" aria-labelledby="skills-title" className={s.section}>
       <div className={s.plate}>
-        <h2 id="skills-title">Habilidades</h2>
+        <h2 id="skills-title">{getDictionary(lang).sections.skills}</h2>
         <Prism />
       </div>
       <div className={s.grid}>

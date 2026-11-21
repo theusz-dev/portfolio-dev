@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
-import "./globals.css";
+import "../globals.css";
 
+// Design prototypes: Portuguese only, outside the /pt · /en routing.
 export const metadata: Metadata = {
   title: "Matheus Fernandes — Protótipos do portfólio",
   description: "Propostas visuais em teste para o novo portfólio.",
@@ -12,7 +13,7 @@ export const viewport: Viewport = {
   colorScheme: "dark",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function PrototypesLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-BR">
       <body>{children}</body>

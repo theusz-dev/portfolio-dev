@@ -32,6 +32,17 @@
   transition: color .3s ease;
 }
 .brand:hover { color: var(--ink); }
+.topbarEnd {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+/* PT / EN, the same quiet treatment as in the hero. */
+.language { display: flex; align-items: center; color: var(--muted); }
+.language a { padding: 6px 2px; transition: color .3s ease; }
+.language a + a::before { content: "/"; margin: 0 .5em; opacity: .5; color: var(--muted); }
+.language a:hover,
+.language a[aria-current] { color: var(--ink); }
 
 .header {
   padding: clamp(36px, 5vw, 72px) 0 clamp(26px, 3vw, 40px);
