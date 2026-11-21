@@ -38,6 +38,35 @@
     0 0 220px 120px rgb(var(--light-rgb) / 0.04);
 }
 
+/* The moon's outer halo breathes slowly (opacity and scale only, so it stays on the compositor). */
+.moon::after {
+  content: "";
+  position: absolute;
+  inset: -70px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgb(var(--light-rgb) / 0.1) 0%, rgb(var(--light-rgb) / 0) 65%);
+  animation: moon-breath 9s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes moon-breath {
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(0.94);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .moon::after {
+    animation: none;
+  }
+}
+
 .vignette {
   position: absolute;
   inset: 0;

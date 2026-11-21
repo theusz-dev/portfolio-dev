@@ -6,7 +6,24 @@ import { SandWorm, WORM_KINDS, type WormKind } from "./sandWorm";
 import { useCanvasLoop } from "./useCanvasLoop";
 
 type Point = { u: number; z: number; jx: number; seed: number };
-type Star = { x: number; y: number; r: number; phase: number };
+/**
+ * A star on the slowly turning sky. `angle`/`radius` place it around a pole
+ * above the frame; `x`/`y` are its current position (0..1), refreshed every
+ * frame so the constellations can follow it.
+ */
+type Star = {
+  x: number;
+  y: number;
+  r: number;
+  phase: number;
+  angle: number;
+  radius: number;
+  speed: number;
+  depth: number;
+  alpha: number;
+};
+type Sky = { poleY: number; rMin: number; rMax: number; span: number };
+type Meteor = { x: number; y: number; dx: number; dy: number; length: number; start: number };
 
 /** A pulse spreading through the sand in rings, centred at world (x, z). */
 type Ripple = { x: number; z: number; start: number; strength: number };
@@ -28,6 +45,11 @@ const SEGMENT_TIME = 0.42;
 const CONSTELLATION_HOLD = 3.6;
 const CONSTELLATION_FADE = 1.6;
 const TRACE_LIFE = 1.5;
+
+/** The sky turns about a pole above the frame, a few pixels per second. */
+const SKY_SPEED = 0.003; // radians per second
+const BAND_ANGLE = 0.35; // where the Milky Way crosses the arc of sky
+const METEOR_LIFE = 0.9;
 
 export function terrainHeight(x: number, z: number, travel: number) {
   const zz = z + travel;
@@ -58,6 +80,9 @@ export function ParticleTerrain({ className }: { className?: string }) {
   const points = useRef<Point[]>([]);
   const stars = useRef<Star[]>([]);
   const buckets = useRef<number[][]>([]);
+  const sky = useRef<Sky>({ poleY: 0, rMin: 1, rMax: 1, span: 1 });
+  const meteor = useRef<Meteor | null>(null);
+  const nextMeteor = useRef(9);
   const effect = useRef<DuneEffect>("ondas");
 
   const ripples = useRef<Ripple[]>([]);
@@ -92,13 +117,47 @@ export function ParticleTerrain({ className }: { className?: string }) {
       }
       points.current = next;
 
-      const starCount = Math.round((width * height) / (isSmall ? 5200 : 7800));
-      stars.current = Array.from({ length: starCount }, () => ({
-        x: Math.random(),
-        y: Math.random() * 0.55,
+      // Stars live on an annulus around a pole above the frame; the slice of
+      // it that's on screen is the top 55% of the canvas.
+      const poleY = -height * 1.1;
+      const rMin = height * 1.1;
+      const rMax = height * 1.67;
+      const span = Math.asin(Math.min(1, (width / 2 + 30) / rMin));
+      sky.current = { poleY, rMin, rMax, span };
+      const sector = span * (rMax * rMax - rMin * rMin);
+      const visible = width * height * 0.55;
+      const starCount = Math.round(((width * height) / (isSmall ? 5200 : 7800)) * (sector / visible));
+      const radiusAt = () => Math.sqrt(rMin * rMin + Math.random() * (rMax * rMax - rMin * rMin));
+      const field: Star[] = Array.from({ length: starCount }, () => ({
+        x: 0,
+        y: 0,
         r: Math.random() < 0.08 ? 1.3 : 0.7,
         phase: Math.random() * Math.PI * 2,
+        angle: (Math.random() * 2 - 1) * span,
+        radius: radiusAt(),
+        speed: 0.45 + Math.random() * 1.1,
+        depth: 0.2 + Math.random() * 0.8,
+        alpha: 0.85,
       }));
+      // Milky Way: faint dust stars crowding along a diagonal band.
+      const dust = Math.round(starCount * 0.6);
+      for (let i = 0; i < dust; i++) {
+        const radius = radiusAt();
+        const t = (radius - rMin) / (rMax - rMin);
+        const scatter = (Math.random() + Math.random() + Math.random() - 1.5) * 0.09;
+        field.push({
+          x: 0,
+          y: 0,
+          r: 0.6,
+          phase: Math.random() * Math.PI * 2,
+          angle: BAND_ANGLE + (t - 0.5) * 0.55 + scatter,
+          radius,
+          speed: 0.3 + Math.random() * 0.8,
+          depth: 0.1,
+          alpha: 0.3 + Math.random() * 0.25,
+        });
+      }
+      stars.current = field;
       buckets.current = Array.from({ length: BUCKETS }, () => []);
       figures.current = [];
       traces.current = [];
@@ -124,16 +183,49 @@ export function ParticleTerrain({ className }: { className?: string }) {
       const burrowing = creature.burrowing;
 
       // --- Sky ---------------------------------------------------------------
+      const { poleY, rMin, rMax, span } = sky.current;
+      const turn = time * SKY_SPEED;
+      const wrap = (a: number) => {
+        const w = span * 2;
+        return ((((a + span) % w) + w) % w) - span;
+      };
+
+      // The Milky Way's glow: a few soft blobs strung along the band.
+      for (let k = 0; k < 5; k++) {
+        const t = k / 4;
+        const radius = rMin + t * (rMax - rMin);
+        const a = wrap(BAND_ANGLE + (t - 0.5) * 0.55 + turn);
+        const gx = cx + radius * Math.sin(a);
+        const gy = poleY + radius * Math.cos(a);
+        const reach = height * 0.2;
+        if (gx < -reach || gx > width + reach) continue;
+        const glow = ctx.createRadialGradient(gx, gy, 0, gx, gy, reach);
+        glow.addColorStop(0, `rgba(${starRgb}, 0.022)`);
+        glow.addColorStop(1, `rgba(${starRgb}, 0)`);
+        ctx.fillStyle = glow;
+        ctx.fillRect(gx - reach, gy - reach, reach * 2, reach * 2);
+      }
+
+      // Stars: turning with the sky, nearer ones drifting a touch with the cursor.
+      for (const s of stars.current) {
+        const a = wrap(s.angle + turn);
+        s.x = (cx + s.radius * Math.sin(a) + pointer.x * s.depth * 6) / width;
+        s.y = (poleY + s.radius * Math.cos(a) + pointer.y * s.depth * 3) / height;
+      }
       const lit = mode === "constelacoes" ? updateConstellations(width, height, time, isSmall) : null;
       for (let i = 0; i < stars.current.length; i++) {
         const s = stars.current[i];
-        const twinkle = 0.35 + 0.65 * (0.5 + 0.5 * Math.sin(time * 0.8 + s.phase));
+        const x = s.x * width;
+        const y = s.y * height;
+        if (x < -2 || x > width + 2 || y < -2) continue;
+        const twinkle = 0.35 + 0.65 * (0.5 + 0.5 * Math.sin(time * s.speed + s.phase));
         const boost = lit?.get(i) ?? 0;
-        ctx.fillStyle = `rgba(${starRgb}, ${Math.min(1, 0.85 * twinkle + boost)})`;
+        ctx.fillStyle = `rgba(${starRgb}, ${Math.min(1, s.alpha * twinkle + boost)})`;
         const r = s.r + boost * 0.9;
-        ctx.fillRect(s.x * width - (r - s.r) / 2, s.y * height - (r - s.r) / 2, r, r);
+        ctx.fillRect(x - (r - s.r) / 2, y - (r - s.r) / 2, r, r);
       }
       if (lit) drawConstellations(ctx, width, height, time, starRgb);
+      drawMeteor(ctx, width, height, time, starRgb);
 
       // --- Effect state ------------------------------------------------------
       const rippleList = ripples.current;
@@ -250,6 +342,41 @@ export function ParticleTerrain({ className }: { className?: string }) {
       creature.draw(ctx, view, dot, cssRgb(ctx.canvas, "--bg-rgb", "0, 0, 0"));
     },
   );
+
+  /** A rare shooting star, high in the sky, gone in under a second. */
+  function drawMeteor(ctx: CanvasRenderingContext2D, width: number, height: number, time: number, rgb: string) {
+    if (time >= nextMeteor.current) {
+      const angle = Math.PI * (0.12 + Math.random() * 0.1);
+      const side = Math.random() < 0.5 ? -1 : 1;
+      meteor.current = {
+        x: width * (0.15 + Math.random() * 0.7),
+        y: height * (0.04 + Math.random() * 0.22),
+        dx: Math.cos(angle) * side,
+        dy: Math.sin(angle),
+        length: Math.min(width * 0.16, 200),
+        start: time,
+      };
+      nextMeteor.current = time + 14 + Math.random() * 14;
+    }
+    const m = meteor.current;
+    if (!m) return;
+    const t = (time - m.start) / METEOR_LIFE;
+    if (t < 0 || t > 1) return;
+    const travel = m.length * (1 - Math.pow(1 - t, 3));
+    const hx = m.x + m.dx * travel;
+    const hy = m.y + m.dy * travel;
+    const tail = m.length * 0.45 * (1 - 0.5 * t);
+    const fade = Math.sin(Math.PI * t);
+    const streak = ctx.createLinearGradient(hx, hy, hx - m.dx * tail, hy - m.dy * tail);
+    streak.addColorStop(0, `rgba(${rgb}, ${0.6 * fade})`);
+    streak.addColorStop(1, `rgba(${rgb}, 0)`);
+    ctx.strokeStyle = streak;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(hx, hy);
+    ctx.lineTo(hx - m.dx * tail, hy - m.dy * tail);
+    ctx.stroke();
+  }
 
   /** Starts a new figure when it's time, and returns how lit each star is. */
   function updateConstellations(width: number, height: number, time: number, isSmall: boolean) {
