@@ -22,7 +22,8 @@ export function PostGrid({ items, tags, labels }: Props) {
   const [tag, setTag] = useState<string | null>(null);
 
   useEffect(() => {
-    const fromUrl = new URLSearchParams(window.location.search).get("tag");
+    const params = new URLSearchParams(window.location.search);
+    const fromUrl = params.get("tag");
     if (fromUrl && items.some((item) => item.tags.includes(fromUrl))) setTag(fromUrl);
   }, [items]);
 
