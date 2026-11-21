@@ -2,13 +2,14 @@
 
 import { useEffect, useRef } from "react";
 import { cssRgb } from "./cssRgb";
+import { SandWorm, WORM_KINDS, type WormKind } from "./sandWorm";
 import { useCanvasLoop } from "./useCanvasLoop";
 
 type Point = { u: number; z: number; jx: number; seed: number };
 type Star = { x: number; y: number; r: number; phase: number };
 
 /** A pulse spreading through the sand in rings, centred at world (x, z). */
-type Ripple = { x: number; z: number; start: number };
+type Ripple = { x: number; z: number; start: number; strength: number };
 /** A handful of stars joined into a figure, drawn one segment at a time. */
 type Constellation = { stars: number[]; edges: [number, number][]; start: number; label: string };
 /** A spot the cursor (or the wandering wind) passed over, in canvas pixels. */
@@ -39,6 +40,11 @@ export function terrainHeight(x: number, z: number, travel: number) {
   return amp * (0.6 * crest * crest + 0.28 * roll + 0.12 * grain);
 }
 
+function wormFromUrl(): WormKind | null {
+  const value = new URLSearchParams(window.location.search).get("verme");
+  return WORM_KINDS.includes(value as WormKind) ? (value as WormKind) : null;
+}
+
 function effectFromUrl(): DuneEffect {
   const value = new URLSearchParams(window.location.search).get("efeito");
   return EFFECTS.includes(value as DuneEffect) ? (value as DuneEffect) : "ondas";
@@ -64,6 +70,7 @@ export function ParticleTerrain({ className }: { className?: string }) {
   const traces = useRef<Trace[]>([]);
   const lastMove = useRef(-Infinity);
   const clock = useRef(0);
+  const worm = useRef<SandWorm | null>(null);
 
   const canvasRef = useCanvasLoop(
     ({ width, height, isSmall }) => {
@@ -107,6 +114,14 @@ export function ParticleTerrain({ className }: { className?: string }) {
       const sway = pointer.x * 0.8;
       const travel = time * 0.55;
       const cx = width / 2;
+      const ground = (x: number, z: number) => terrainHeight(x + sway, z, travel);
+
+      // The creature lives under every effect; `?verme=` pins one behaviour.
+      worm.current ??= new SandWorm(wormFromUrl());
+      const creature = worm.current;
+      const view = { width, height, cx, horizon, focal, camY, sway, time, isSmall, ground };
+      creature.update(view);
+      const burrowing = creature.burrowing;
 
       // --- Sky ---------------------------------------------------------------
       const lit = mode === "constelacoes" ? updateConstellations(width, height, time, isSmall) : null;
@@ -127,19 +142,20 @@ export function ParticleTerrain({ className }: { className?: string }) {
         for (const tap of taps.current.splice(0)) {
           if (tap.y < horizon + 6) continue;
           const z = Math.min(32, Math.max(2.5, (camY * focal * 0.55) / (tap.y - horizon)));
-          rippleList.push({ x: ((tap.x - cx) * z) / focal + sway * 0.15, z, start: time });
+          rippleList.push({ x: ((tap.x - cx) * z) / focal + sway * 0.15, z, start: time, strength: 1 });
         }
         if (time >= nextRipple.current) {
           const z = 6 + Math.random() * 16;
           const u = (Math.random() - 0.5) * 0.6;
-          rippleList.push({ x: ((u * (width / 2) * z) / focal) * 2.3, z, start: time });
+          rippleList.push({ x: ((u * (width / 2) * z) / focal) * 2.3, z, start: time, strength: 1 });
           nextRipple.current = time + 5 + Math.random() * 3;
         }
-        for (let i = rippleList.length - 1; i >= 0; i--) {
-          if (time - rippleList[i].start > RIPPLE_LIFE) rippleList.splice(i, 1);
-        }
-        if (rippleList.length > 5) rippleList.splice(0, rippleList.length - 5);
       }
+      for (const r of creature.ripples.splice(0)) rippleList.push({ ...r, start: time });
+      for (let i = rippleList.length - 1; i >= 0; i--) {
+        if (time - rippleList[i].start > RIPPLE_LIFE) rippleList.splice(i, 1);
+      }
+      if (rippleList.length > 5) rippleList.splice(0, rippleList.length - 5);
 
       const trail = traces.current;
       let box: [number, number, number, number] | null = null;
@@ -169,13 +185,14 @@ export function ParticleTerrain({ className }: { className?: string }) {
       for (const p of points.current) {
         const halfSpan = ((width / 2) * p.z) / focal;
         const x = (p.u + p.jx) * halfSpan * 2.3;
-        const h = terrainHeight(x + sway, p.z, travel);
+        const lift = burrowing ? creature.terrainLift(x, p.z, time) : 0;
+        const h = terrainHeight(x + sway, p.z, travel) + lift;
         let sx = cx + ((x - sway * 0.15) * focal) / p.z;
         if (sx < -2 || sx > width + 2) continue;
         let sy = horizon + (((camY - h) * focal) / p.z) * 0.55;
-        let glow = 0;
+        let glow = lift * 0.6;
 
-        if (rippleList.length && mode === "ondas") {
+        if (rippleList.length) {
           for (const r of rippleList) {
             const age = time - r.start;
             const dx = x - r.x;
@@ -183,11 +200,12 @@ export function ParticleTerrain({ className }: { className?: string }) {
             const d = Math.sqrt(dx * dx + dz * dz) - age * RIPPLE_SPEED;
             if (d > 4 || d < -4) continue;
             const damp = Math.exp(-age * 0.3) / (1 + age * RIPPLE_SPEED * 0.06);
-            const wave = Math.exp(-(d * d) / 3.2) * Math.cos(d * 2.4) * damp;
+            const wave = Math.exp(-(d * d) / 3.2) * Math.cos(d * 2.4) * damp * r.strength;
             sy -= wave * 20 * (1 - 0.45 * (p.z / Z_FAR));
             if (wave > 0) glow += wave;
           }
-        } else if (box && sx > box[0] && sx < box[2] && sy > box[1] && sy < box[3]) {
+        }
+        if (box && sx > box[0] && sx < box[2] && sy > box[1] && sy < box[3]) {
           // The sand parts around the cursor's path and slowly settles back.
           let pushX = 0;
           let pushY = 0;
@@ -228,6 +246,8 @@ export function ParticleTerrain({ className }: { className?: string }) {
           ctx.fillRect(list[i], list[i + 1], list[i + 2], list[i + 2]);
         }
       }
+
+      creature.draw(ctx, view, dot, cssRgb(ctx.canvas, "--bg-rgb", "0, 0, 0"));
     },
   );
 
