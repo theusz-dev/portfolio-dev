@@ -5,6 +5,7 @@ import { format, hasLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { alternates } from "@/i18n/metadata";
 import { HorizonteHero } from "../prototipos/horizonte/_components/HorizonteHero";
+import { Firmament } from "../prototipos/horizonte/observatorio/leituras/ambient/Firmament";
 import { fontVariables } from "../prototipos/horizonte/_components/fonts";
 import theme from "../prototipos/horizonte/_components/theme.module.css";
 import { Ai } from "../prototipos/horizonte/observatorio/leituras/Ai";
@@ -40,20 +41,23 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 export default async function Home(props: Props) {
   const lang = await langFrom(props);
   return (
-    <main className={`${theme.theme} ${fontVariables} ${newsreader.variable} ${meridiano.meridiano}`}>
-      <HorizonteHero
-        lang={lang}
-        languageSwitch
-        projectId="projetos"
-        sectionLinks={{ experience: "#experiencia", skills: "#habilidades", ai: "#ia", contact: "#contato" }}
-      />
-      <Reading variant="meridiano" lang={lang} />
-      <Experience lang={lang} />
-      <Skills lang={lang} />
-      <Projects lang={lang} />
-      <Ai lang={lang} />
-      <Writing lang={lang} />
-      <Footer lang={lang} />
-    </main>
+    <>
+      <main className={`${theme.theme} ${fontVariables} ${newsreader.variable} ${meridiano.meridiano}`}>
+        <HorizonteHero
+          lang={lang}
+          languageSwitch
+          projectId="projetos"
+          sectionLinks={{ experience: "#experiencia", skills: "#habilidades", ai: "#ia", contact: "#contato" }}
+        />
+        <Reading variant="meridiano" lang={lang} />
+        <Experience lang={lang} />
+        <Skills lang={lang} />
+        <Projects lang={lang} />
+        <Ai lang={lang} />
+        <Writing lang={lang} />
+        <Footer lang={lang} />
+      </main>
+      <Firmament />
+    </>
   );
 }

@@ -1,0 +1,13 @@
+/* The Firmamento layer over the portfolio pages. It never takes clicks;
+   `difference` keeps the stars from washing out light details. */
+.layer {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+  mix-blend-mode: difference;
+}
+
+.canvas {
+  display: block;
+}

@@ -4,6 +4,7 @@ import { getProfile } from "@/content/portfolio";
 import { getProjects, projectIds } from "@/content/projects";
 import { hasLocale, locales } from "@/i18n/config";
 import { alternates } from "@/i18n/metadata";
+import { Firmament } from "../../../prototipos/horizonte/observatorio/leituras/ambient/Firmament";
 import { fontVariables } from "../../../prototipos/horizonte/_components/fonts";
 import theme from "../../../prototipos/horizonte/_components/theme.module.css";
 import meridiano from "../../../prototipos/horizonte/observatorio/leituras/meridiano.module.css";
@@ -40,14 +41,17 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 export default async function ProjectPage(props: Props) {
   const { lang, projects, index } = await findProject(props);
   return (
-    <main className={`${theme.theme} ${fontVariables} ${newsreader.variable} ${meridiano.meridiano}`}>
-      <ProjectDetail
-        lang={lang}
-        project={projects[index]}
-        number={index + 1}
-        previous={projects[index - 1] ?? null}
-        next={projects[index + 1] ?? null}
-      />
-    </main>
+    <>
+      <main className={`${theme.theme} ${fontVariables} ${newsreader.variable} ${meridiano.meridiano}`}>
+        <ProjectDetail
+          lang={lang}
+          project={projects[index]}
+          number={index + 1}
+          previous={projects[index - 1] ?? null}
+          next={projects[index + 1] ?? null}
+        />
+      </main>
+      <Firmament />
+    </>
   );
 }
