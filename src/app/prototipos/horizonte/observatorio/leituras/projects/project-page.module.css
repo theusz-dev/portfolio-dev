@@ -1,6 +1,11 @@
 /* A project's own page. Static: no scroll-driven motion. */
 
 .shell {
+  /* Brighter reading inks. On the home page the meridiano rule
+     `> :not(:first-child)` brightens them, but here the page is main's first
+     child, so it would keep the hero's dimmer tones. */
+  --ink-soft: #e8e8e8;
+  --muted: #b4b4b4;
   max-width: 1180px;
   margin: 0 auto;
   padding: clamp(8px, 1.6vw, 20px) clamp(8px, 2.6vw, 38px) clamp(40px, 5vw, 72px);
