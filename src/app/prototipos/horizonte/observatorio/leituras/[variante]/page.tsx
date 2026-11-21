@@ -4,6 +4,7 @@ import { HorizonteHero } from "../../../_components/HorizonteHero";
 import { fontVariables } from "../../../_components/fonts";
 import theme from "../../../_components/theme.module.css";
 import { ObservatorioProject } from "../../_components/ObservatorioProject";
+import { Ai } from "../Ai";
 import { Experience } from "../Experience";
 import { Reading } from "../Reading";
 import { Skills } from "../Skills";
@@ -41,6 +42,7 @@ export default async function ReadingPage(props: Props) {
         </>
       )}
       <ObservatorioProject />
+      {isMeridiano && <Ai />}
     </main>
   );
 }

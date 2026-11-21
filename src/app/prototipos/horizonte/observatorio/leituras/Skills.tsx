@@ -20,6 +20,7 @@ const symbols: Record<string, string> = {
   "APIs REST": "m8 6-6 6 6 6m8-12 6 6-6 6m-6 1 4-14",
   "Code review": "M3 4h18v13H10l-5 4v-4H3Zm5 7 3 3 5-6",
   Codex: "M2 4h20v16H2Zm4 4 4 4-4 4m7 0h5",
+  "Claude Code": "M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6 5.6 18.4",
 };
 
 function TechIcon({ name }: { name: string }) {
@@ -251,7 +252,6 @@ export function Skills() {
         {groups.map(({ id, title, items }, i) => (
           <section
             key={id}
-            id={id === "ia" ? id : undefined}
             aria-labelledby={`skills-${id}`}
             className={s.group}
             style={{ "--ray": rayColors[i % rayColors.length] } as CSSProperties}
