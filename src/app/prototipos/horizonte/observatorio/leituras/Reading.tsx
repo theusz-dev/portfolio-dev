@@ -58,7 +58,7 @@ function Meridiano() {
         <h2 id="about-title">Meu trabalho, <em>hoje.</em></h2>
       </header>
       <div className={s.meridian}>
-        <div className={s.ribbon} aria-hidden="true" />
+        <div className={s.ribbon} aria-hidden="true" data-dust-trail />
         <section className={s.passage}>
           <h3>Agora</h3>
           <p>Curso Engenharia de Computação na <strong>UFG</strong>. Minha experiência mais recente foi na <strong>Umobi</strong>, onde desenvolvi aplicativos em Flutter e interfaces web em Angular.</p>

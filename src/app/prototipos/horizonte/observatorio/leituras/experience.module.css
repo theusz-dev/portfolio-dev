@@ -1,4 +1,6 @@
 .section {
+  position: relative;
+  isolation: isolate;
   max-width: 1340px;
   margin: 0 auto;
   padding: clamp(44px, 5.6vw, 88px) clamp(16px, 3.8vw, 54px);
@@ -119,21 +121,15 @@
 .ridge {
   position: relative;
   align-self: stretch;
-  container-type: size;
-  --ridge-width: 28cqw;
   --star-travel: min(26vh, 230px);
 }
-.ridge::before {
-  content: "";
+/* Dust trail drawn by ExperienceRidge: it leaves the about section's ribbon
+   and curves into this column. */
+.trail {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 100cqh;
-  height: 100cqw;
-  transform: translate(-50%, -50%) rotate(90deg);
-  background: url('./dunas-proximas.webp') center / 100% var(--ridge-width) no-repeat,
-              url('./dunas-distantes.webp') center / 100% var(--ridge-width) no-repeat;
-  mask-image: linear-gradient(90deg, transparent, black 4% 96%, transparent);
+  z-index: -1;
+  max-width: none;
+  pointer-events: none;
 }
 .starTrack {
   position: sticky;
@@ -150,7 +146,7 @@
   background: #fff4dc;
   box-shadow: 0 0 6px 2px #ffe4ae88, 0 0 21px 5px #e9c79340;
   transform: translate(
-    calc(-50% + var(--crest, .23) * var(--ridge-width)),
+    calc(-50% + var(--star-x, 0px)),
     calc(var(--progress, 0) * (var(--star-travel) - 100%))
   );
   transition: transform 300ms cubic-bezier(.2, .65, .25, 1);
@@ -167,7 +163,6 @@
   .chart { max-width: 460px; }
   .timeline { margin-left: 10px; gap: 40px; }
   .entryMeta { flex-direction: column; gap: 2px; }
-  .ridge { --ridge-width: 42cqw; }
 }
 @media (prefers-reduced-motion: reduce) {
   .years + .chartRow .track b::after { animation: none; }

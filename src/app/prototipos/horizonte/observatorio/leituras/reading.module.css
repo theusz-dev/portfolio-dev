@@ -127,7 +127,8 @@
   position: absolute; z-index: -1; inset: 0 auto 0 50%; width: 120px;
   transform: translateX(-50%); pointer-events: none;
   overflow: hidden;
-  mask-image: linear-gradient(transparent, black 8%, black 92%, transparent);
+  /* Open at the bottom: the Experience trail continues from here. */
+  mask-image: linear-gradient(transparent, black 8%);
 }
 .ribbon::before {
   content: ""; position: absolute; inset: -8px 0;
