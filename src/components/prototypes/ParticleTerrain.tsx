@@ -10,7 +10,7 @@ const Z_NEAR = 1.2;
 const Z_FAR = 46;
 const BUCKETS = 7;
 
-function terrainHeight(x: number, z: number, travel: number) {
+export function terrainHeight(x: number, z: number, travel: number) {
   const zz = z + travel;
   const ridge = Math.min(1, Math.max(0, (z - 8) / 24));
   const amp = 0.3 + 5.6 * Math.pow(ridge, 1.5);

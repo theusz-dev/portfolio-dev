@@ -6,6 +6,7 @@ import theme from "../../../_components/theme.module.css";
 import { ObservatorioProject } from "../../_components/ObservatorioProject";
 import { Ai } from "../Ai";
 import { Experience } from "../Experience";
+import { Footer } from "../Footer";
 import { Reading } from "../Reading";
 import { Skills } from "../Skills";
 import meridiano from "../meridiano.module.css";
@@ -35,7 +36,7 @@ export default async function ReadingPage(props: Props) {
   const isMeridiano = variant === "meridiano";
   return (
     <main className={[theme.theme, fontVariables, isMeridiano && `${newsreader.variable} ${meridiano.meridiano}`].filter(Boolean).join(" ")}>
-      <HorizonteHero sectionLinks={isMeridiano ? { Experiência: "#experiencia", Habilidades: "#habilidades", IA: "#ia" } : undefined} />
+      <HorizonteHero sectionLinks={isMeridiano ? { Experiência: "#experiencia", Habilidades: "#habilidades", IA: "#ia", Contato: "#contato" } : undefined} />
       <Reading variant={variant} />
       {isMeridiano && (
         <>
@@ -44,7 +45,12 @@ export default async function ReadingPage(props: Props) {
         </>
       )}
       <ObservatorioProject />
-      {isMeridiano && <Ai />}
+      {isMeridiano && (
+        <>
+          <Ai />
+          <Footer />
+        </>
+      )}
     </main>
   );
 }

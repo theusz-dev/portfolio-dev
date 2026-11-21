@@ -22,6 +22,11 @@ export const profile = {
   yearsExperience: "2+ anos",
   topStack: ["TypeScript", "React / Next.js", "Flutter", "Python / Django", "Laravel"],
   email: "matheustae@hotmail.com",
+  whatsapp: {
+    number: "5562994395965",
+    display: "+55 62 99439-5965",
+    message: "Olá, Matheus! Vi seu portfólio e gostaria de conversar.",
+  },
   resume: "/resume.pdf",
   ctaPrimary: "Explorar projetos",
   ctaResume: "Baixar CV",
