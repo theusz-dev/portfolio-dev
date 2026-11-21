@@ -77,53 +77,53 @@ function Glass() {
     <svg className={s.glass} viewBox="0 0 260 240" aria-hidden="true" focusable="false" data-glass>
       <defs>
         <linearGradient id="glass-front" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#e6dfd1" stopOpacity=".34" />
-          <stop offset=".3" stopColor="#6b675e" stopOpacity=".26" />
+          <stop offset="0" stopColor="#dfdfdf" stopOpacity=".34" />
+          <stop offset=".3" stopColor="#676767" stopOpacity=".26" />
           <stop offset=".62" stopColor="#1d1e1f" stopOpacity=".5" />
-          <stop offset="1" stopColor="#9a8d79" stopOpacity=".42" />
+          <stop offset="1" stopColor="#8e8e8e" stopOpacity=".42" />
         </linearGradient>
         <linearGradient id="glass-side" x1="0" y1="0" x2="1" y2=".4">
-          <stop offset="0" stopColor="#f7ecd6" stopOpacity=".46" />
-          <stop offset=".45" stopColor="#8a7e6a" stopOpacity=".28" />
+          <stop offset="0" stopColor="#ededed" stopOpacity=".46" />
+          <stop offset=".45" stopColor="#7f7f7f" stopOpacity=".28" />
           <stop offset="1" stopColor="#2a2724" stopOpacity=".55" />
         </linearGradient>
         <linearGradient id="glass-edge" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#fff8ea" />
-          <stop offset=".55" stopColor="#bdb4a3" stopOpacity=".75" />
-          <stop offset="1" stopColor="#6d665a" stopOpacity=".55" />
+          <stop offset="0" stopColor="#f8f8f8" />
+          <stop offset=".55" stopColor="#b5b5b5" stopOpacity=".75" />
+          <stop offset="1" stopColor="#676767" stopOpacity=".55" />
         </linearGradient>
         <linearGradient id="glass-beam-in" x1="0" x2="1">
-          <stop offset="0" stopColor="#f6ead2" stopOpacity="0" />
-          <stop offset=".75" stopColor="#f6ead2" stopOpacity=".5" />
-          <stop offset="1" stopColor="#fff6e2" stopOpacity=".95" />
+          <stop offset="0" stopColor="#ebebeb" stopOpacity="0" />
+          <stop offset=".75" stopColor="#ebebeb" stopOpacity=".5" />
+          <stop offset="1" stopColor="#f6f6f6" stopOpacity=".95" />
         </linearGradient>
         <linearGradient id="glass-sweep" x1="0" x2="1">
           <stop offset="0" stopColor="#fff" stopOpacity="0" />
-          <stop offset=".5" stopColor="#fff8ec" stopOpacity=".22" />
+          <stop offset=".5" stopColor="#f9f9f9" stopOpacity=".22" />
           <stop offset="1" stopColor="#fff" stopOpacity="0" />
         </linearGradient>
         <linearGradient id="glass-shaft" gradientUnits="userSpaceOnUse" x1={S.x} y1={S.y} x2={IN.x} y2={IN.y}>
-          <stop offset=".1" stopColor="#f6e7c8" stopOpacity="0" />
-          <stop offset=".45" stopColor="#f6e7c8" stopOpacity=".1" />
-          <stop offset=".8" stopColor="#f8ead0" stopOpacity=".18" />
-          <stop offset="1" stopColor="#fff3da" stopOpacity=".4" />
+          <stop offset=".1" stopColor="#e8e8e8" stopOpacity="0" />
+          <stop offset=".45" stopColor="#e8e8e8" stopOpacity=".1" />
+          <stop offset=".8" stopColor="#ebebeb" stopOpacity=".18" />
+          <stop offset="1" stopColor="#f4f4f4" stopOpacity=".4" />
         </linearGradient>
         <radialGradient id="glass-glow">
-          <stop offset="0" stopColor="#fff4d8" stopOpacity=".55" />
-          <stop offset=".3" stopColor="#e8cfa6" stopOpacity=".2" />
-          <stop offset="1" stopColor="#c9a16c" stopOpacity="0" />
+          <stop offset="0" stopColor="#f4f4f4" stopOpacity=".55" />
+          <stop offset=".3" stopColor="#d1d1d1" stopOpacity=".2" />
+          <stop offset="1" stopColor="#a6a6a6" stopOpacity="0" />
         </radialGradient>
         <radialGradient id="glass-caustic">
-          <stop offset="0" stopColor="#f2d9ad" stopOpacity=".38" />
-          <stop offset="1" stopColor="#f2d9ad" stopOpacity="0" />
+          <stop offset="0" stopColor="#dbdbdb" stopOpacity=".38" />
+          <stop offset="1" stopColor="#dbdbdb" stopOpacity="0" />
         </radialGradient>
         <radialGradient id="glass-exit" cx="150" cy="124" r="60" gradientUnits="userSpaceOnUse">
-          <stop offset="0" stopColor="#fff1d2" stopOpacity=".42" />
-          <stop offset="1" stopColor="#fff1d2" stopOpacity="0" />
+          <stop offset="0" stopColor="#f2f2f2" stopOpacity=".42" />
+          <stop offset="1" stopColor="#f2f2f2" stopOpacity="0" />
         </radialGradient>
         <linearGradient id="glass-inner" x1="0" y1="1" x2=".6" y2="0">
           <stop offset="0" stopColor="#fff" stopOpacity="0" />
-          <stop offset=".55" stopColor="#f4ead8" stopOpacity=".16" />
+          <stop offset=".55" stopColor="#ebebeb" stopOpacity=".16" />
           <stop offset="1" stopColor="#fff" stopOpacity="0" />
         </linearGradient>
         <linearGradient id="glass-fan" x1="0" y1="0" x2="0" y2="1">
@@ -161,7 +161,7 @@ function Glass() {
           suspended dust, one aligned core beam and a pulse that travels into the glass */}
       <g className={s.beamDesk}>
         <polygon points={SHAFT} fill="url(#glass-shaft)" filter="url(#glass-haze)" />
-        <path d={`M${pt(S)} L${pt(IN)}`} stroke="#fff3da" strokeWidth="5" opacity=".14" fill="none" filter="url(#glass-soft)" />
+        <path d={`M${pt(S)} L${pt(IN)}`} stroke="#f4f4f4" strokeWidth="5" opacity=".14" fill="none" filter="url(#glass-soft)" />
         <path d={`M${pt(S)} L${pt(IN)}`} stroke="url(#glass-beam-in)" strokeWidth="1.3" fill="none" />
         <g className={s.motes}>
           {MOTES.map((m, i) => (
@@ -170,22 +170,22 @@ function Glass() {
               cx={m.x}
               cy={m.y}
               r={m.r}
-              fill="#fff6e2"
+              fill="#f6f6f6"
               style={{ "--dx": `${DIR.x * 70}px`, "--dy": `${DIR.y * 70}px`, animationDuration: `${m.dur}s`, animationDelay: `${m.delay}s` } as CSSProperties}
             />
           ))}
         </g>
-        <path className={s.pulse} d={`M${pt(S)} L${pt(IN)}`} pathLength={1} stroke="#fffaf0" strokeWidth="2.4" strokeLinecap="round" fill="none" filter="url(#glass-bloom)" />
+        <path className={s.pulse} d={`M${pt(S)} L${pt(IN)}`} pathLength={1} stroke="#fafafa" strokeWidth="2.4" strokeLinecap="round" fill="none" filter="url(#glass-bloom)" />
       </g>
 
       {/* phones: the original incoming beam */}
       <g className={`${s.beamIn} ${s.beamPhone}`}>
         <path d={`M-460 176 L${P_IN}`} stroke="url(#glass-beam-in)" strokeWidth="1.3" fill="none" />
-        <path d={`M-120 158 L${P_IN}`} stroke="#fff3da" strokeWidth="4" opacity=".1" fill="none" filter="url(#glass-soft)" />
+        <path d={`M-120 158 L${P_IN}`} stroke="#f4f4f4" strokeWidth="4" opacity=".1" fill="none" filter="url(#glass-soft)" />
       </g>
 
       {/* hidden back edges seen through the glass */}
-      <path d={`M${B} L${B2} L${A2} M${B2} L${C2}`} fill="none" stroke="#d8d0c0" strokeWidth=".6" opacity=".16" />
+      <path d={`M${B} L${B2} L${A2} M${B2} L${C2}`} fill="none" stroke="#d1d1d1" strokeWidth=".6" opacity=".16" />
 
       {/* faces */}
       <polygon points={`${A} ${A2} ${C2} ${C}`} fill="url(#glass-side)" />
@@ -194,12 +194,12 @@ function Glass() {
       {/* internal reflection: a fainter triangle seen through the body */}
       <polygon points="92,58 132,196 50,186" fill="url(#glass-inner)" />
       {/* bevel: a second, inset line along each edge gives the glass thickness */}
-      <path d="M95 33 L41 194 M101 34 L143 205 M45 196 L141 208 M138 22 L183 196" fill="none" stroke="#e9e1d1" strokeWidth=".5" opacity=".3" />
+      <path d="M95 33 L41 194 M101 34 L143 205 M45 196 L141 208 M138 22 L183 196" fill="none" stroke="#e2e2e2" strokeWidth=".5" opacity=".3" />
 
       {/* light travelling inside the glass */}
       <g className={s.beamInside}>
-        <path d={`M${P_IN} Q105 132 ${E}`} stroke="#fff1d4" strokeWidth="7" opacity=".16" fill="none" filter="url(#glass-soft)" />
-        <path d={`M${P_IN} Q105 132 ${E}`} stroke="#fff6e4" strokeWidth="1.2" fill="none" />
+        <path d={`M${P_IN} Q105 132 ${E}`} stroke="#f2f2f2" strokeWidth="7" opacity=".16" fill="none" filter="url(#glass-soft)" />
+        <path d={`M${P_IN} Q105 132 ${E}`} stroke="#f7f7f7" strokeWidth="1.2" fill="none" />
       </g>
 
       {/* a slow highlight sweeping across the front face */}
@@ -209,14 +209,14 @@ function Glass() {
 
       {/* edges: bloom underneath, crisp line on top (brighter where light hits) */}
       <g filter="url(#glass-bloom)" opacity=".55">
-        <path d={`M${B} L${A} L${C} M${A} L${A2} L${C2} L${C}`} fill="none" stroke="#fff4df" strokeWidth="1.6" />
+        <path d={`M${B} L${A} L${C} M${A} L${A2} L${C2} L${C}`} fill="none" stroke="#f5f5f5" strokeWidth="1.6" />
       </g>
       <path d={`M${B} L${A} L${C} Z M${A} L${A2} L${C2} L${C}`} fill="none" stroke="url(#glass-edge)" strokeWidth=".9" strokeLinejoin="round" />
 
       {/* specular glints on the apex and along the lit edge */}
-      <path d="M97 30 L112 86" stroke="#fffaf0" strokeWidth="1.4" strokeLinecap="round" opacity=".85" />
-      <path d="M136 20 L150 70" stroke="#fffaf0" strokeWidth="1" strokeLinecap="round" opacity=".5" />
-      <circle cx="96" cy="24" r="1.6" fill="#fffaf0" />
+      <path d="M97 30 L112 86" stroke="#fafafa" strokeWidth="1.4" strokeLinecap="round" opacity=".85" />
+      <path d="M136 20 L150 70" stroke="#fafafa" strokeWidth="1" strokeLinecap="round" opacity=".5" />
+      <circle cx="96" cy="24" r="1.6" fill="#fafafa" />
 
       {/* dispersion: a soft, edgeless fan of spectrum light that melts into the dust */}
       <g className={s.spectrum} mask="url(#glass-fan-fade)" filter="url(#glass-haze)">
@@ -224,7 +224,7 @@ function Glass() {
       </g>
       <g className={s.glint}>
         <circle cx="150" cy="124" r="26" fill="url(#glass-glow)" />
-        <circle cx="150" cy="124" r="1.8" fill="#fff8e6" />
+        <circle cx="150" cy="124" r="1.8" fill="#f8f8f8" />
       </g>
     </svg>
   );

@@ -176,7 +176,7 @@ export function MobileDunes({ colors }: { colors: string[] }) {
         </filter>
         {/* the feeder carries white light that warms into the first category's colour */}
         <linearGradient id="mobile-feeder" gradientUnits="userSpaceOnUse" x1={exit.x} y1={exit.y} x2={join.x} y2={join.y}>
-          <stop offset="0" stopColor="#fff3da" />
+          <stop offset="0" stopColor="#f4f4f4" />
           <stop offset="1" stopColor={colors[0]} />
         </linearGradient>
         {/* down the river, each category's colour arrives where its branch leaves */}
