@@ -113,7 +113,7 @@ export class SandWorm {
 
   constructor(force: WormKind | null) {
     this.force = force;
-    this.nextAt = force ? 2 : 7;
+    this.nextAt = force ? 2 : 1.5;
   }
 
   get burrowing() {
