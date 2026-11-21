@@ -1,6 +1,4 @@
-import type { CSSProperties } from "react";
 import Image from "next/image";
-import { Reveal } from "@/components/prototypes/Reveal";
 import { ScrollScene } from "@/components/prototypes/ScrollScene";
 import { project } from "@/content/portfolio";
 import { SmallCaps } from "../../_components/HorizonteHero";
@@ -85,9 +83,9 @@ export function ObservatorioProject({ id = "projeto" }: { id?: string }) {
       </ScrollScene>
 
       <section className={s.findings} aria-label="Notas e ficha do projeto">
-        <Reveal as="ol" className={s.notes} threshold={0.15}>
+        <ol className={s.notes}>
           {points.map((point, i) => (
-            <li key={point.title} style={{ "--d": i } as CSSProperties}>
+            <li key={point.title}>
               <span className={s.noteNum}>{i + 1}</span>
               <div>
                 <p className={s.noteTitle}>{point.title}</p>
@@ -95,18 +93,18 @@ export function ObservatorioProject({ id = "projeto" }: { id?: string }) {
               </div>
             </li>
           ))}
-        </Reveal>
+        </ol>
 
-        <Reveal as="dl" className={s.sheet} threshold={0.15}>
+        <dl className={s.sheet}>
           {sheet.map((row, i) => (
-            <div key={row.label} style={{ "--d": i } as CSSProperties}>
+            <div key={row.label}>
               <dt>
                 <span>0{i + 1}</span> {row.label}
               </dt>
               <dd>{row.text}</dd>
             </div>
           ))}
-        </Reveal>
+        </dl>
 
         <div className={s.sheetFoot}>
           <ul className={s.chips}>

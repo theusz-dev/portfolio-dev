@@ -13,8 +13,6 @@ export const metadata: Metadata = {
 
 const [firstSentence, ...rest] = profile.summary.split(". ");
 const restSentences = rest.join(". ");
-// Index of the milestone that represents "now" (Umobi, 2026).
-const NOW = 2;
 
 export default function EclipsePage() {
   return (
@@ -64,17 +62,16 @@ export default function EclipsePage() {
         <div className={s.horizon}>
           <p className={s.label}>Trajetória</p>
           <ol className={s.timeline}>
-            {profile.milestones.map((m, i) => (
+            {profile.milestones.map((m) => (
               <li
                 key={m.when}
                 className={s.milestone}
-                data-state={i < NOW ? "past" : i === NOW ? "now" : "next"}
+                data-state={m.when === "Dez. 2026" ? "next" : "past"}
               >
                 <span className={s.when}>{m.when}</span>
                 <span className={s.mark} aria-hidden="true" />
                 <span className={s.where}>
                   {m.place}
-                  {i === NOW && <span className={s.nowTag}>Agora</span>}
                 </span>
                 <span className={s.title}>{m.title}</span>
                 <span className={s.text2}>{m.text}</span>

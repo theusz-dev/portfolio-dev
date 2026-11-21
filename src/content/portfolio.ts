@@ -14,7 +14,7 @@ export const profile = {
   statement: "Código com propósito.",
   statementAccent: "Produtos com identidade.",
   summary:
-    "Desenvolvedor full stack na Umobi e estudante de Engenharia de Computação na UFG. Construo e evoluo produtos web e mobile em produção, do levantamento de requisitos à entrega, com foco em integrações, qualidade de código e experiências úteis.",
+    "Sou desenvolvedor full stack e estudante de Engenharia de Computação na UFG. Na Umobi, desenvolvi aplicativos e interfaces web em produção. Hoje busco uma oportunidade 100% remota.",
   availability: "Disponível para trabalho 100% remoto",
   location: "Goiânia, GO · Brasil",
   city: "Goiânia",

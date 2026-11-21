@@ -74,7 +74,7 @@ export default function PainelPage() {
               2+<span>anos</span>
             </p>
             <p className={s.cardText}>
-              Desde 2024: CETT/UFG e {profile.company}. Hoje, full stack na {profile.company}.
+              Trabalhei no CETT/UFG e na {profile.company}. Hoje busco uma oportunidade 100% remota.
             </p>
           </article>
 
