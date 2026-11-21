@@ -8,8 +8,8 @@
 }
 
 .meridiano > :not(:first-child) {
-  --ink-soft: #d6d2ca;
-  --muted: #a39f97;
+  --ink-soft: var(--read-ink-soft);
+  --muted: var(--read-muted);
 }
 
 /* Extra breathing room between the sections after "Sobre". Only anchored

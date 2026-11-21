@@ -43,7 +43,7 @@
 .ghost,
 .split {
   backdrop-filter: blur(8px);
-  background: rgba(10, 10, 11, 0.3);
+  background: rgb(var(--bg-rgb) / 0.3);
 }
 
 .ghost {
@@ -79,7 +79,7 @@
 
 .splitMain:hover {
   color: var(--ink);
-  background: rgba(236, 232, 225, 0.06);
+  background: rgb(var(--ink-rgb) / 0.06);
 }
 
 .copy {
@@ -96,7 +96,7 @@
 
 .copy:hover {
   color: var(--ink);
-  background: rgba(236, 232, 225, 0.06);
+  background: rgb(var(--ink-rgb) / 0.06);
 }
 
 .copy:focus-visible,
@@ -151,10 +151,10 @@
 
 .splitPrimary:hover,
 .splitPrimary:focus-within {
-  border-color: #fffaf0;
+  border-color: var(--light);
   box-shadow:
-    0 0 24px rgba(255, 250, 240, 0.28),
-    0 0 70px rgba(255, 250, 240, 0.1);
+    0 0 24px rgb(var(--light-rgb) / 0.28),
+    0 0 70px rgb(var(--light-rgb) / 0.1);
 }
 
 .splitPrimary .splitMain,
@@ -165,11 +165,11 @@
 .splitPrimary .splitMain:hover,
 .splitPrimary .copy:hover {
   color: var(--bg);
-  background: #fffaf0;
+  background: var(--light);
 }
 
 .splitPrimary .copy {
-  border-left-color: rgba(10, 10, 11, 0.18);
+  border-left-color: rgb(var(--bg-rgb) / 0.18);
 }
 
 .split.splitPrimary[data-copied] .copy {
@@ -183,7 +183,7 @@
   position: absolute;
   inset: -1px;
   border-radius: inherit;
-  box-shadow: 0 0 0 1px rgba(255, 250, 240, 0.6);
+  box-shadow: 0 0 0 1px rgb(var(--light-rgb) / 0.6);
   animation: ring 0.9s ease-out forwards;
   pointer-events: none;
 }
@@ -197,7 +197,7 @@
   padding: 9px 14px;
   border: 1px solid var(--line-strong);
   border-radius: 10px;
-  background: rgba(15, 15, 16, 0.82);
+  background: rgb(var(--frame-rgb) / 0.82);
   backdrop-filter: blur(10px);
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
   font: 400 0.7rem/1 var(--mono);
@@ -223,7 +223,7 @@
   margin-bottom: -4px;
   border: solid var(--line-strong);
   border-width: 1px 0 0 1px;
-  background: rgb(15, 15, 16);
+  background: rgb(var(--frame-rgb));
   transform: rotate(45deg);
 }
 

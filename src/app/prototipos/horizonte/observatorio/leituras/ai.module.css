@@ -51,7 +51,7 @@
   font: 400 .72rem/1.5 var(--mono);
   letter-spacing: .14em;
   text-transform: uppercase;
-  color: #d3cdc1;
+  color: var(--ink-soft);
 }
 .meta span { color: var(--muted); }
 .meta em {
@@ -150,8 +150,8 @@
 }
 .pipeline::after {
   width: 70px;
-  background: linear-gradient(90deg, transparent, #fff6e2);
-  box-shadow: 0 0 10px #fff3da;
+  background: linear-gradient(90deg, transparent, var(--star));
+  box-shadow: 0 0 10px var(--star);
   animation: travel 9s cubic-bezier(.5, 0, .5, 1) infinite;
 }
 .pipeline li {

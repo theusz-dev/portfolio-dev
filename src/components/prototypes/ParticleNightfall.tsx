@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { terrainHeight } from "./ParticleTerrain";
+import { cssRgb } from "./cssRgb";
 import { useCanvasLoop } from "./useCanvasLoop";
 
 type Point = { u: number; z: number; jx: number; seed: number };
@@ -56,6 +57,9 @@ export function ParticleNightfall({ className, horizon = 0.64, moon = 0.555 }: {
       plain.current = Array.from({ length: BUCKETS }, () => []);
     },
     ({ ctx, width, height, time, pointer, isSmall }) => {
+      const dot = cssRgb(ctx.canvas, "--particle-rgb", "236, 232, 224");
+      const star = cssRgb(ctx.canvas, "--particle-star-rgb", "232, 228, 220");
+      const lightRgb = cssRgb(ctx.canvas, "--light-rgb", "255, 250, 240");
       const horizonY = height * horizon;
       const focal = Math.min(width, height * 1.6) * (isSmall ? 1.05 : 0.82);
       const camY = 1.55 + pointer.y * 0.12;
@@ -69,7 +73,7 @@ export function ParticleNightfall({ className, horizon = 0.64, moon = 0.555 }: {
 
       for (const star of stars.current) {
         const twinkle = 0.35 + 0.65 * (0.5 + 0.5 * Math.sin(time * 0.8 + star.phase));
-        ctx.fillStyle = `rgba(232, 228, 220, ${0.5 * twinkle})`;
+        ctx.fillStyle = `rgba(${star}, ${0.5 * twinkle})`;
         ctx.fillRect(star.x * width, star.y * height, star.r, star.r);
       }
 
@@ -78,16 +82,16 @@ export function ParticleNightfall({ className, horizon = 0.64, moon = 0.555 }: {
       // Moon: a breathing halo, then the disc.
       const breath = 0.5 + 0.5 * Math.sin(time * 0.5);
       const halo = ctx.createRadialGradient(moonX, moonY, 0, moonX, moonY, height * 0.42);
-      halo.addColorStop(0, `rgba(255, 250, 240, ${0.12 + 0.03 * breath})`);
-      halo.addColorStop(0.25, "rgba(255, 250, 240, 0.035)");
-      halo.addColorStop(1, "rgba(255, 250, 240, 0)");
+      halo.addColorStop(0, `rgba(${lightRgb}, ${0.12 + 0.03 * breath})`);
+      halo.addColorStop(0.25, `rgba(${lightRgb}, 0.035)`);
+      halo.addColorStop(1, `rgba(${lightRgb}, 0)`);
       ctx.fillStyle = halo;
       ctx.fillRect(0, 0, width, height);
       const disc = ctx.createRadialGradient(moonX, moonY, 0, moonX, moonY, 16);
-      disc.addColorStop(0, "rgba(255, 250, 240, 1)");
-      disc.addColorStop(0.44, "rgba(255, 250, 240, 1)");
-      disc.addColorStop(0.5, "rgba(255, 250, 240, 0.55)");
-      disc.addColorStop(1, "rgba(255, 250, 240, 0)");
+      disc.addColorStop(0, `rgba(${lightRgb}, 1)`);
+      disc.addColorStop(0.44, `rgba(${lightRgb}, 1)`);
+      disc.addColorStop(0.5, `rgba(${lightRgb}, 0.55)`);
+      disc.addColorStop(1, `rgba(${lightRgb}, 0)`);
       ctx.fillStyle = disc;
       ctx.beginPath();
       ctx.arc(moonX, moonY, 16, 0, Math.PI * 2);
@@ -123,10 +127,10 @@ export function ParticleNightfall({ className, horizon = 0.64, moon = 0.555 }: {
       for (let b = 0; b < BUCKETS; b++) {
         const alpha = ((b + 1) / BUCKETS) * 0.85;
         const plainList = plainLists[b];
-        ctx.fillStyle = `rgba(236, 232, 224, ${alpha})`;
+        ctx.fillStyle = `rgba(${dot}, ${alpha})`;
         for (let i = 0; i < plainList.length; i += 3) ctx.fillRect(plainList[i], plainList[i + 1], plainList[i + 2], plainList[i + 2]);
         const litList = litLists[b];
-        ctx.fillStyle = `rgba(255, 249, 236, ${Math.min(1, alpha * 1.1)})`;
+        ctx.fillStyle = `rgba(${lightRgb}, ${Math.min(1, alpha * 1.1)})`;
         for (let i = 0; i < litList.length; i += 3) ctx.fillRect(litList[i], litList[i + 1], litList[i + 2], litList[i + 2]);
       }
     },
@@ -167,9 +171,10 @@ function drawMeteor(
   const headY = m.y + dirY * m.length * ease;
   const tail = m.length * 0.45 * (1 - t * 0.6);
   const fade = Math.sin(Math.PI * t);
+  const lightRgb = cssRgb(ctx.canvas, "--light-rgb", "255, 250, 240");
   const gradient = ctx.createLinearGradient(headX, headY, headX - dirX * tail, headY - dirY * tail);
-  gradient.addColorStop(0, `rgba(255, 250, 240, ${0.55 * fade})`);
-  gradient.addColorStop(1, "rgba(255, 250, 240, 0)");
+  gradient.addColorStop(0, `rgba(${lightRgb}, ${0.55 * fade})`);
+  gradient.addColorStop(1, `rgba(${lightRgb}, 0)`);
   ctx.strokeStyle = gradient;
   ctx.lineWidth = 1;
   ctx.beginPath();

@@ -130,7 +130,7 @@
   font: 400 .72rem/1.4 var(--mono);
   letter-spacing: .14em;
   text-transform: uppercase;
-  color: #d3cdc1;
+  color: var(--ink-soft);
 }
 .count {
   font-size: .62rem;
@@ -154,11 +154,11 @@
   padding: 4px 14px 4px 4px;
   border: 1px solid transparent;
   border-radius: 999px;
-  --base: #131314e8;
+  --base: color-mix(in srgb, var(--frame) 91%, transparent);
   background:
-    linear-gradient(100deg, color-mix(in srgb, var(--ray) var(--glow), transparent), #ece8e106 75%) padding-box,
+    linear-gradient(100deg, color-mix(in srgb, var(--ray) var(--glow), transparent), color-mix(in srgb, var(--ink) 2.4%, transparent) 75%) padding-box,
     linear-gradient(var(--base), var(--base)) padding-box,
-    linear-gradient(100deg, color-mix(in srgb, var(--ray) var(--rim), transparent), #ece8e114 60%, #ece8e10a) border-box;
+    linear-gradient(100deg, color-mix(in srgb, var(--ray) var(--rim), transparent), color-mix(in srgb, var(--ink) 7.8%, transparent) 60%, color-mix(in srgb, var(--ink) 3.9%, transparent)) border-box;
   white-space: nowrap;
   transition:
     --glow .35s ease,
@@ -172,16 +172,16 @@
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--ray) 16%, #151514), #0d0d0e 75%);
+  background: radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--ray) 16%, var(--frame)), var(--frame-lo) 75%);
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ray) 26%, transparent);
-  color: color-mix(in srgb, var(--ray) 78%, #f1ece2);
+  color: color-mix(in srgb, var(--ray) 78%, var(--ink));
   transition: color .35s ease, box-shadow .35s ease;
 }
 .icon svg { width: 16px; height: 16px; }
 .name {
   font: 600 clamp(1.1rem, 1.28vw, 1.25rem)/1 var(--serif);
   letter-spacing: .018em;
-  color: #f8f4ec;
+  color: var(--ink);
   text-shadow: 0 1px 2px #000c;
   transform: translateY(-.04em);
 }
@@ -192,12 +192,12 @@
     --glow: 9%;
     --rim: 68%;
     background:
-      linear-gradient(90deg, transparent 0, color-mix(in srgb, var(--ray) var(--glow), transparent) 30%, #ece8e106 80%) padding-box,
+      linear-gradient(90deg, transparent 0, color-mix(in srgb, var(--ray) var(--glow), transparent) 30%, color-mix(in srgb, var(--ink) 2.4%, transparent) 80%) padding-box,
       linear-gradient(90deg, transparent 0, transparent 12%, var(--base) 36%) padding-box,
-      linear-gradient(90deg, transparent 0, transparent 8%, color-mix(in srgb, var(--ray) var(--rim), transparent) 34%, #ece8e114 78%, #ece8e10a) border-box;
+      linear-gradient(90deg, transparent 0, transparent 8%, color-mix(in srgb, var(--ray) var(--rim), transparent) 34%, color-mix(in srgb, var(--ink) 7.8%, transparent) 78%, color-mix(in srgb, var(--ink) 3.9%, transparent)) border-box;
   }
   .group li:first-child .icon {
-    background: radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--ray) 30%, #151514), #0d0d0ecc 75%);
+    background: radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--ray) 30%, var(--frame)), color-mix(in srgb, var(--frame-lo) 80%, transparent) 75%);
     box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ray) 18%, transparent);
   }
 }
@@ -207,7 +207,7 @@
   box-shadow: inset 0 0 14px color-mix(in srgb, var(--ray) 10%, transparent);
 }
 .group li:hover .icon {
-  color: #fffaf0;
+  color: var(--light);
   box-shadow:
     inset 0 0 0 1px color-mix(in srgb, var(--ray) 70%, transparent),
     inset 0 0 8px color-mix(in srgb, var(--ray) 35%, transparent);

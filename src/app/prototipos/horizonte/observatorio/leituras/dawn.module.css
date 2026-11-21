@@ -1,16 +1,17 @@
 .hills {
+  filter: var(--image-filter);
   position: relative;
   height: var(--dawn-height, clamp(88px, 10vw, 150px));
   margin: 12px 0 0;
   background: url('./dunas-proximas.webp') center bottom / 100% 56% no-repeat,
               url('./dunas-distantes.webp') center bottom 12px / 100% 55% no-repeat,
-              radial-gradient(ellipse at 67% 64%, #b39a7421, transparent 46%);
+              radial-gradient(ellipse at 67% 64%, color-mix(in srgb, var(--star-dim) 12.9%, transparent), transparent 46%);
   mask-image: linear-gradient(90deg, transparent, black 7% 94%, transparent);
 }
 .hills i {
   position: absolute; left: 67%; top: 37%;
   width: 9px; height: 9px; border-radius: 50%;
-  background: #fff4dc; box-shadow: 0 0 16px 4px #f0cc8c6b;
+  background: var(--star); box-shadow: 0 0 16px 4px color-mix(in srgb, var(--star-glow) 42%, transparent);
   animation: rise 19s ease-in-out infinite alternate;
 }
 @keyframes rise { to { transform: translate(3px, -6px); } }

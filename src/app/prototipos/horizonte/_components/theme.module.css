@@ -1,14 +1,37 @@
 /* Tokens and page shell shared by the Horizonte prototype and its variations. */
 
 .theme {
-  --bg: #0a0a0b;
-  --frame: #0f0f10;
-  --ink: #ece8e1;
-  --ink-soft: #c9c5bd;
-  --muted: #86837d;
-  --line: rgba(236, 232, 225, 0.14);
-  --line-strong: rgba(236, 232, 225, 0.42);
-  --glow: rgba(255, 250, 240, 0.28);
+  /* Palette "Breu": true black with crisp white. */
+  --bg: #000000;
+  --bg-rgb: 0 0 0;
+  --frame: #030303;
+  --frame-rgb: 3 3 3;
+  --frame-hi: #0c0c0c;
+  --frame-lo: #000000;
+  --void: #000000;
+  --panel-hi: #161616;
+  --panel: #0a0a0a;
+  --panel-lo: #040404;
+  --ink: #fafafa;
+  --ink-rgb: 250 250 250;
+  --ink-soft: #d6d6d6;
+  --muted: #8f8f8f;
+  --quiet: #b8b8b8;
+  --read-ink-soft: #e2e2e2;
+  --read-muted: #ababab;
+  --read-quiet: #b0b0b0;
+  --light: #ffffff;
+  --light-rgb: 255 255 255;
+  --title-fade: #a3a3a3;
+  --star: #ffffff;
+  --star-glow: #f0f0f0;
+  --star-dim: #c8c8c8;
+  --particle-rgb: 245 245 245;
+  --particle-star-rgb: 240 240 240;
+  --image-filter: grayscale(1) contrast(1.05);
+  --line: rgb(var(--ink-rgb) / 0.14);
+  --line-strong: rgb(var(--ink-rgb) / 0.42);
+  --glow: rgb(var(--light-rgb) / 0.28);
   --serif: var(--font-serif), "Cormorant Garamond", Georgia, serif;
   --mono: var(--font-mono), "IBM Plex Mono", ui-monospace, monospace;
   /* Running text (paragraphs, lists, quotes). Titles keep --serif. */

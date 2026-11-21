@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import { cssRgb } from "./cssRgb";
 import { useCanvasLoop } from "./useCanvasLoop";
 
 type Point = { u: number; z: number; jx: number; seed: number };
@@ -57,6 +58,8 @@ export function ParticleTerrain({ className }: { className?: string }) {
       buckets.current = Array.from({ length: BUCKETS }, () => []);
     },
     ({ ctx, width, height, time, pointer, isSmall }) => {
+      const dot = cssRgb(ctx.canvas, "--particle-rgb", "236, 232, 224");
+      const star = cssRgb(ctx.canvas, "--particle-star-rgb", "232, 228, 220");
       const horizon = height * (isSmall ? 0.66 : 0.62);
       const focal = Math.min(width, height * 1.6) * (isSmall ? 1.05 : 0.82);
       const camY = 1.55 + pointer.y * 0.12;
@@ -66,7 +69,7 @@ export function ParticleTerrain({ className }: { className?: string }) {
 
       for (const star of stars.current) {
         const twinkle = 0.35 + 0.65 * (0.5 + 0.5 * Math.sin(time * 0.8 + star.phase));
-        ctx.fillStyle = `rgba(232, 228, 220, ${0.5 * twinkle})`;
+        ctx.fillStyle = `rgba(${star}, ${0.5 * twinkle})`;
         ctx.fillRect(star.x * width, star.y * height, star.r, star.r);
       }
 
@@ -94,7 +97,7 @@ export function ParticleTerrain({ className }: { className?: string }) {
       for (let b = 0; b < BUCKETS; b++) {
         const list = lists[b];
         if (!list.length) continue;
-        ctx.fillStyle = `rgba(236, 232, 224, ${((b + 1) / BUCKETS) * 0.85})`;
+        ctx.fillStyle = `rgba(${dot}, ${((b + 1) / BUCKETS) * 0.85})`;
         for (let i = 0; i < list.length; i += 3) {
           ctx.fillRect(list[i], list[i + 1], list[i + 2], list[i + 2]);
         }

@@ -1,5 +1,5 @@
 .reading {
-  --quiet: #ada9a1;
+  --quiet: var(--read-quiet);
   max-width: 1340px;
   margin: auto;
   padding: clamp(42px, 5vw, 76px) clamp(12px, 3.8vw, 54px);
@@ -45,22 +45,23 @@
   overflow: hidden;
   border-radius: 26px;
   border: 1px solid var(--line);
-  background: radial-gradient(ellipse at 72% 28%, #292725 0%, #171718 33%, #101011 77%);
+  background: radial-gradient(ellipse at 72% 28%, var(--panel-hi) 0%, var(--panel) 33%, var(--panel-lo) 77%);
 }
 .panorama header {
   padding: clamp(30px, 4.7vw, 68px);
   padding-bottom: clamp(122px, 12.5vw, 184px);
 }
-.panorama h2 { text-shadow: 0 1px 22px #e2dac315; }
+.panorama h2 { text-shadow: 0 1px 22px color-mix(in srgb, var(--star-glow) 8.2%, transparent); }
 .lead { max-width: 39ch; margin-top: 18px; }
 .horizonArt { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
 .smallMoon {
   position: absolute; left: 77%; top: 37%;
-  width: 10px; height: 10px; border-radius: 50%; background: #fff6df;
-  box-shadow: 0 0 13px 4px #ffecd983, 0 0 54px 20px #f1e2c321;
+  width: 10px; height: 10px; border-radius: 50%; background: var(--star);
+  box-shadow: 0 0 13px 4px color-mix(in srgb, var(--star-glow) 51.4%, transparent), 0 0 54px 20px color-mix(in srgb, var(--star-glow) 12.9%, transparent);
   animation: moonDrift 22s ease-in-out infinite alternate;
 }
 .farRidge, .nearRidge {
+  filter: var(--image-filter);
   position: absolute; bottom: -6%; left: -4%; right: -4%;
   height: clamp(150px, 15vw, 220px);
   background-size: 100% 100%; background-repeat: no-repeat;
@@ -93,22 +94,23 @@
 .letter > .availability { padding-left: 14px; border-left: 1px solid var(--line-strong); }
 .lunarFigure {
   min-width: 0; padding: 0 4px 14px;
-  background: radial-gradient(ellipse at 51% 40%, #29272280, transparent 65%);
+  background: radial-gradient(ellipse at 51% 40%, color-mix(in srgb, var(--panel-hi) 50.2%, transparent), transparent 65%);
 }
 .moonPlate {
+  filter: var(--image-filter);
   position: relative; aspect-ratio: 400 / 362;
   background: url('./lua.webp') center / contain no-repeat;
 }
 .orbitalPlane {
   position: absolute; inset: 5% 6%;
-  border: 1px solid #cec6b537;
+  border: 1px solid color-mix(in srgb, var(--star-dim) 21.6%, transparent);
   border-radius: 50%;
   transform: rotate(-30deg) scaleY(.94);
 }
 .satellite { position: absolute; inset: 0; }
 .satellite::before {
   content: ""; position: absolute; width: 5px; height: 5px; border-radius: 50%;
-  background: #fff5db; box-shadow: 0 0 12px 2px #f2ddae66;
+  background: var(--star); box-shadow: 0 0 12px 2px color-mix(in srgb, var(--star-glow) 40%, transparent);
   offset-path: ellipse(50% 50% at 50% 50%);
   offset-distance: 8%;
   animation: transit 70s linear infinite;
@@ -134,6 +136,7 @@
   mask-image: linear-gradient(transparent, black 8%);
 }
 .ribbon::before {
+  filter: var(--image-filter);
   content: ""; position: absolute; inset: -8px 0;
   background: url('./poeira.webp') center / 100% 100% no-repeat;
   animation: dustDrift 15s ease-in-out infinite alternate;
@@ -145,8 +148,8 @@
 .passage::before {
   content: ""; position: absolute; top: 24px; right: -63px;
   width: 6px; height: 6px; border-radius: 50%;
-  background: #eee7da;
-  box-shadow: 0 0 12px 2px #e7d8ad59;
+  background: var(--star);
+  box-shadow: 0 0 12px 2px color-mix(in srgb, var(--star-glow) 34.9%, transparent);
 }
 .passage:nth-of-type(even)::before { left: -63px; right: auto; }
 .passage p { margin-top: 7px; max-width: 40ch; }

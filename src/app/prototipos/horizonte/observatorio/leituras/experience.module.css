@@ -37,6 +37,7 @@
 }
 
 .chart::before {
+  filter: var(--image-filter);
   content: "";
   position: absolute;
   z-index: -1;
@@ -64,7 +65,7 @@
   position: absolute;
   top: 50%;
   height: 1px;
-  background: linear-gradient(90deg, #79746d, #eee2cd);
+  background: linear-gradient(90deg, var(--muted), var(--star));
 }
 .track b::after {
   content: "";
@@ -75,11 +76,11 @@
   height: 5px;
   border-radius: 50%;
   transform: translate(50%, -50%);
-  background: #f0e5d2;
-  box-shadow: 0 0 9px #efd9ac70;
+  background: var(--star);
+  box-shadow: 0 0 9px color-mix(in srgb, var(--star-glow) 43.9%, transparent);
 }
 .years + .chartRow .track b::after { animation: starlight 8s ease-in-out infinite alternate; }
-@keyframes starlight { to { box-shadow: 0 0 13px 2px #efd9ac88; } }
+@keyframes starlight { to { box-shadow: 0 0 13px 2px color-mix(in srgb, var(--star-glow) 53.3%, transparent); } }
 
 .timeline {
   display: grid;
@@ -87,7 +88,7 @@
   margin: 0 0 0 clamp(12px, 1.4vw, 22px);
 }
 .entry {
-  border-top: 1px solid #ece8e133;
+  border-top: 1px solid color-mix(in srgb, var(--ink) 20%, transparent);
   position: relative;
   padding-top: 18px;
 }
@@ -98,7 +99,7 @@
   top: -1px;
   width: 32px;
   height: 1px;
-  background: #d2c6b0;
+  background: var(--star-dim);
 }
 .entryMeta {
   display: flex;
@@ -108,7 +109,7 @@
   gap: 6px 16px;
 }
 .period, .stack, .company { font: 400 .73rem/1.6 var(--mono); }
-.period { color: #b7b0a4; letter-spacing: .035em; }
+.period { color: var(--quiet); letter-spacing: .035em; }
 .company { color: var(--ink); letter-spacing: .085em; text-transform: uppercase; }
 .entry h3 {
   margin-top: 16px;
@@ -127,6 +128,7 @@
 /* Dust trail drawn by ExperienceRidge: it leaves the about section's ribbon
    and curves into this column. */
 .trail {
+  filter: var(--image-filter);
   position: absolute;
   z-index: -1;
   max-width: none;
@@ -144,8 +146,8 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #fff4dc;
-  box-shadow: 0 0 6px 2px #ffe4ae88, 0 0 21px 5px #e9c79340;
+  background: var(--star);
+  box-shadow: 0 0 6px 2px color-mix(in srgb, var(--star-glow) 53.3%, transparent), 0 0 21px 5px color-mix(in srgb, var(--star-glow) 25.1%, transparent);
   transform: translate(
     calc(-50% + var(--star-x, 0px)),
     calc(var(--progress, 0) * (var(--star-travel) - 100%))
