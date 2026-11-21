@@ -6,8 +6,10 @@
  *   opens a maw of counter-rotating tooth rings, then sinks back.
  * - salto: breaches in the distance and arcs over like a whale, every segment
  *   following the same path back under.
- * - travessia: tunnels just under the surface; only the swell of sand it
- *   pushes ahead of itself (and the dust it throws up) gives it away.
+ * - travessia: ploughs across the dunes half buried, like a whale's back
+ *   breaking water: a bow wave of sand ahead of the head, the ridged back
+ *   sliding through in lateral S-curves, sand pouring off its flanks, berms
+ *   and a furrow left behind, and the tail diving last.
  *
  * The body is a real tube in world space, seen through the dunes' camera:
  * back-lit by the moon (bright rims, dark belly), ringed with grooves and
@@ -45,7 +47,18 @@ type WormEvent = {
   fired: number;
 };
 
-type Grain = { x: number; y: number; z: number; vx: number; vy: number; vz: number; age: number; life: number };
+type Grain = {
+  x: number;
+  y: number;
+  z: number;
+  vx: number;
+  vy: number;
+  vz: number;
+  age: number;
+  life: number;
+  /** Share of gravity it feels: 1 for sand, low for dust hanging in the air. */
+  fall: number;
+};
 
 const NODES = 110;
 const BUCKETS = 8;
@@ -81,6 +94,10 @@ export class SandWorm {
   private open = 0;
   private bodyVisible = false;
   private puff = 0;
+  private spray = 0;
+  private dust = 0;
+  private travelled = 0;
+  private pour = 0;
 
   // Burrow state.
   private headX = 0;
@@ -134,7 +151,7 @@ export class SandWorm {
       this.local = time - ev.start;
       if (this.local > ev.duration) {
         this.event = null;
-        this.nextAt = time + (this.force ? 3 : 20 + Math.random() * 20);
+        this.nextAt = time + (this.force ? 3 : 10);
       } else if (ev.kind === "erguida") {
         this.spineRise(ev, view);
       } else if (ev.kind === "salto") {
@@ -146,19 +163,29 @@ export class SandWorm {
     this.stepGrains(view);
   }
 
-  /** How much the burrowing creature lifts the sand at world (x, z). */
+  /** Where the swimming body's centre line runs, at a distance behind the head. */
+  private swimZ(ev: WormEvent, behind: number) {
+    const along = this.travelled - behind;
+    return ev.z + 1.1 * Math.sin(along * 0.12);
+  }
+
+  /** How the ploughing creature reshapes the sand at world (x, z). */
   terrainLift(x: number, z: number, time: number) {
     const ev = this.event;
     if (!ev || ev.kind !== "travessia" || this.envelope <= 0) return 0;
-    const along = (this.headX - x) * ev.dir; // > 0 behind the head
-    if (along < -3 || along > 20) return 0;
-    const lat = z - ev.z;
-    if (lat > 6 || lat < -6) return 0;
-    const profile = along < 0 ? Math.exp(-(along * along) / 0.7) : Math.exp(-along / 5.5);
-    const width = 1.25 + 0.07 * Math.max(0, along);
-    // Its rings rolling under the sand leave a faint pulse along the swell.
-    const rings = 1 + 0.22 * Math.sin(along * 1.7 - time * 5);
-    return this.envelope * 2.1 * profile * rings * Math.exp(-(lat * lat) / (width * width));
+    const behind = (this.headX - x) * ev.dir; // > 0 behind the head
+    if (behind < -5 || behind > ev.length + 14) return 0;
+    const lat = Math.abs(z - this.swimZ(ev, behind));
+    if (lat > 5) return 0;
+    let lift = 0;
+    // Bow wave: a mound of sand shoved ahead of the head.
+    if (behind < 2) lift += 1.1 * Math.exp(-((behind + 1.2) ** 2) / 1.6) * Math.exp(-(lat * lat) / 2.6);
+    // Berms thrown up either side of the body, settling behind it.
+    const berm = Math.exp(-((lat - 2) ** 2) / 0.5) * smooth(-1, 2, behind) * Math.exp(-Math.max(0, behind - ev.length) / 5);
+    lift += 0.45 * berm * (1 + 0.15 * Math.sin(behind * 1.3 - time * 3));
+    // The furrow it leaves where the tail has passed.
+    if (behind > ev.length - 4) lift -= 0.5 * Math.exp(-(lat * lat) / 1.4) * Math.exp(-(behind - ev.length + 4) / 7);
+    return this.envelope * lift;
   }
 
   draw(ctx: CanvasRenderingContext2D, view: WormView, rgb: string, bg: string) {
@@ -198,18 +225,20 @@ export class SandWorm {
         fired: 0,
       };
     }
-    const z = 10 + Math.random() * 6;
-    const speed = 4.6;
+    const z = view.isSmall ? 13 : 12 + Math.random() * 2;
+    const speed = view.isSmall ? 3 : 3.4;
     const span = (view.width * z) / view.focal;
+    const length = 26 * SEGMENT; // whole rings, so the skin can wrap onto it
     return {
       kind,
       start,
-      duration: (span + 8) / speed,
+      // Long enough for the tail to clear the far edge too.
+      duration: (span + length + 10) / speed,
       x: -side * (span / 2 + 4),
       z,
       dir: side,
-      radius: 1.4,
-      length: 14,
+      radius: 1.5,
+      length,
       speed,
       fired: 0,
     };
@@ -349,21 +378,99 @@ export class SandWorm {
 
   private burrow(ev: WormEvent, view: WormView) {
     const t = this.local;
-    this.headX = ev.x + ev.dir * ev.speed * t;
+    // It moves in surges, like something pushing with its whole length:
+    // speeding up, easing off, never stopping.
+    const travelled = ev.speed * t + 1.15 * Math.sin(t * 1.25);
+    this.travelled = travelled;
+    this.headX = ev.x + ev.dir * travelled;
     this.envelope = smooth(0, 1.5, t) * (1 - smooth(ev.duration - 1.5, ev.duration, t));
-    this.puff += this.dt * (view.isSmall ? 90 : 160) * this.envelope;
-    while (this.puff >= 1) {
-      this.puff -= 1;
-      const x = this.headX + ev.dir * Math.random() * 0.6;
-      const z = ev.z + (Math.random() - 0.5) * 1.8;
+
+    // Once per crossing, near the edge it came in from (clear of the title),
+    // the head rears out of the sand and crashes back down.
+    const rearAt = (Math.abs(ev.x) * 0.38) / ev.speed;
+    const rear = smooth(rearAt - 1.4, rearAt, t) * (1 - smooth(rearAt + 1.1, rearAt + 2.6, t));
+    if (t > rearAt - 1.4) this.fire(ev, 1, this.headX, ev.z, 1.1);
+    if (t > rearAt + 2.3) this.fire(ev, 2, this.headX, ev.z, 1.4);
+
+    // Follow-the-leader body: each ring is where the head was, so the lateral
+    // S-curves stay put in the sand while the body slides through them. It
+    // rides just under the surface (only the ridged back shows), with a slow
+    // swell running down it; the head rides a little higher, sweeping side to
+    // side as if feeling its way, and the tail dives.
+    const ds = ev.length / (NODES - 1);
+    const k = (Math.PI * 2) / 16;
+    const w = k * ev.speed * 0.35;
+    for (let i = 0; i < NODES; i++) {
+      const s = i * ds;
+      const near = Math.exp(-s / 3);
+      const x = ev.x + ev.dir * (travelled - s);
+      const z = this.swimZ(ev, s) + 0.4 * Math.sin(t * 1.9) * near;
+      const head = 0.9 * near + 1.9 * rear * Math.exp(-s / 4);
+      const tail = 2.8 * smooth(ev.length - 8, ev.length, s);
+      const swell = 0.35 * Math.sin(k * s - w * t) * smooth(3, 7, s);
+      this.px[i] = x;
+      this.pz[i] = z;
+      this.py[i] = view.ground(x, z) - 0.2 * ev.radius + head + swell - tail;
+    }
+    this.finishSpine(ev, view);
+    // Contractions running down the rings, front to back: it is alive.
+    for (let i = 0; i < NODES; i++) {
+      const s = i * ds;
+      this.rad[i] *= 1 + 0.09 * Math.sin(s * 0.9 - t * 3.4) * smooth(2, 5, s);
+    }
+
+    const rate = view.isSmall ? 0.55 : 1;
+    // Sand thrown up off the bow (a burst as the head crashes back down),
+    // falling back ahead and to the sides.
+    const crash = smooth(rearAt + 1.6, rearAt + 2.3, t) * (1 - smooth(rearAt + 2.6, rearAt + 3.6, t));
+    this.spray += this.dt * (110 + 500 * crash) * rate * this.envelope;
+    while (this.spray >= 1) {
+      this.spray -= 1;
+      const x = this.headX + ev.dir * (0.4 + Math.random() * 1.2);
+      const z = this.swimZ(ev, 0) + (Math.random() - 0.5) * 2.2;
       this.spawn(
         x,
         view.ground(x, z) + this.terrainLift(x, z, view.time),
         z,
-        ev.dir * (0.6 + 1.6 * Math.random()) + (Math.random() - 0.5),
-        1.2 + 2.6 * Math.random(),
-        (Math.random() - 0.5) * 1.6,
-        0.9 + 1.4 * Math.random(),
+        ev.dir * (0.8 + 1.4 * Math.random()),
+        1.4 + 2.4 * Math.random(),
+        (Math.random() - 0.5) * 2.2,
+        1 + 1.4 * Math.random(),
+      );
+    }
+    // Fine dust hanging in the air over its back, drifting behind it.
+    this.dust += this.dt * 70 * rate * this.envelope;
+    while (this.dust >= 1) {
+      this.dust -= 1;
+      const i = Math.floor(Math.random() * NODES * 0.6);
+      const top = this.py[i] + this.rad[i];
+      this.spawn(
+        this.px[i] + (Math.random() - 0.5) * 1.2,
+        Math.max(top, view.ground(this.px[i], this.pz[i])) + Math.random() * 0.5,
+        this.pz[i] + (Math.random() - 0.5) * 1.6,
+        -ev.dir * (0.2 + 0.5 * Math.random()),
+        0.25 + 0.6 * Math.random(),
+        (Math.random() - 0.5) * 0.5,
+        2.4 + 2 * Math.random(),
+        0.06,
+      );
+    }
+    // Sand pouring off its back and down the flanks as it slides along.
+    this.pour += this.dt * 150 * rate * this.envelope;
+    while (this.pour >= 1) {
+      this.pour -= 1;
+      const i = 6 + Math.floor(Math.random() * (NODES * 0.75));
+      const side = Math.random() < 0.5 ? -1 : 1;
+      const top = this.py[i] + this.rad[i] * 0.95;
+      if (top < view.ground(this.px[i], this.pz[i]) + 0.1) continue;
+      this.spawn(
+        this.px[i] + (Math.random() - 0.5) * 0.4,
+        top,
+        this.pz[i] + side * this.rad[i] * 0.4,
+        (Math.random() - 0.5) * 0.3,
+        0.1 + 0.4 * Math.random(),
+        side * (0.4 + 0.6 * Math.random()),
+        0.8 + 1 * Math.random(),
       );
     }
   }
@@ -394,9 +501,9 @@ export class SandWorm {
     }
   }
 
-  private spawn(x: number, y: number, z: number, vx: number, vy: number, vz: number, life: number) {
+  private spawn(x: number, y: number, z: number, vx: number, vy: number, vz: number, life: number, fall = 1) {
     if (this.grains.length >= MAX_GRAINS) return;
-    this.grains.push({ x, y, z, vx, vy, vz, age: 0, life });
+    this.grains.push({ x, y, z, vx, vy, vz, age: 0, life, fall });
   }
 
   private stepGrains(view: WormView) {
@@ -405,7 +512,7 @@ export class SandWorm {
     for (let i = list.length - 1; i >= 0; i--) {
       const g = list[i];
       g.age += dt;
-      g.vy -= GRAVITY * dt;
+      g.vy -= GRAVITY * g.fall * dt;
       const drag = 1 - 0.7 * dt;
       g.vx *= drag;
       g.vz *= drag;
@@ -429,7 +536,8 @@ export class SandWorm {
       const sy = horizon + (((camY - g.y) * focal) / g.z) * 0.55;
       if (sx < 0 || sx > view.width || sy < 0 || sy > view.height) continue;
       const t = g.age / g.life;
-      ctx.globalAlpha = 0.55 * Math.pow(1 - t, 0.7) * Math.min(1, t * 6) * (0.55 + 0.45 * (1 - g.z / 46));
+      const dust = g.fall < 1 ? 0.45 : 1;
+      ctx.globalAlpha = 0.55 * dust * Math.pow(1 - t, 0.7) * Math.min(1, t * 6) * (0.55 + 0.45 * (1 - g.z / 46));
       const size = g.z < 14 ? 1.3 : 1;
       ctx.fillRect(sx, sy, size, size);
     }
@@ -441,13 +549,12 @@ export class SandWorm {
   private drawBody(ctx: CanvasRenderingContext2D, view: WormView, ev: WormEvent, rgb: string, bg: string) {
     const { cx, horizon, focal, camY, sway, ground, width, height } = view;
     const camX = sway * 0.15;
-    const base = ground(ev.x, ev.z);
     const sxOf = (x: number, z: number) => cx + ((x - camX) * focal) / z;
     const syOf = (y: number, z: number) => horizon + (((camY - y) * focal) / z) * 0.55;
 
     // Hidden behind a nearer dune? March the view ray through the sand.
     const occluded = (sx: number, y: number, z: number) => {
-      if (y - base > 5) return false;
+      if (y - ground(((sx - cx) * z) / focal + camX, z) > 5) return false;
       for (let k = 1; k <= 5; k++) {
         const zz = z * (0.35 + 0.12 * k);
         const xw = ((sx - cx) * zz) / focal + camX;
@@ -458,9 +565,32 @@ export class SandWorm {
 
     // 1. The body's dark mass hides the stars and dunes behind it.
     ctx.lineCap = "round";
+    const swimming = ev.kind === "travessia";
     ctx.strokeStyle = `rgba(${bg}, 0.82)`;
+    // Half buried, only the exposed back is solid: a band from the sand line
+    // to the top of the body.
+    if (swimming) {
+      const exposed = (i: number) => {
+        const g = ground(this.px[i], this.pz[i]);
+        const top = this.py[i] + this.rad[i] * 0.92;
+        return top > g + 0.08 ? [(top + g) / 2, (top - g) / 2] : null;
+      };
+      for (let i = 2; i < NODES - 1; i++) {
+        const ea = exposed(i);
+        const eb = exposed(i + 1);
+        if (!ea || !eb) continue;
+        const ax = sxOf(this.px[i], this.pz[i]);
+        const ay = syOf(ea[0], this.pz[i]);
+        if (occluded(ax, ea[0], this.pz[i])) continue;
+        ctx.lineWidth = ((2 * ea[1] * focal) / this.pz[i]) * 0.55 * 0.9;
+        ctx.beginPath();
+        ctx.moveTo(ax, ay);
+        ctx.lineTo(sxOf(this.px[i + 1], this.pz[i + 1]), syOf(eb[0], this.pz[i + 1]));
+        ctx.stroke();
+      }
+    }
     // Start a little below the tip, so the dark mass never peeks past the skin.
-    for (let i = Math.round(NODES * (1.2 / ev.length)); i < NODES - 1; i++) {
+    for (let i = Math.round(NODES * (1.2 / ev.length)); !swimming && i < NODES - 1; i++) {
       const j = i + 1;
       if (this.py[i] < ground(this.px[i], this.pz[i]) + 0.3) continue;
       if (this.py[j] < ground(this.px[j], this.pz[j]) + 0.3) continue;
@@ -489,14 +619,22 @@ export class SandWorm {
     const shedding = ev.kind === "erguida" && this.local > 2.6 && this.local < 7.6 ? 50 : 140;
     const shed = (this.dt * shedding) / (count * 0.35);
 
+    // The swimmer wraps the particles past its tail back onto its body, so the
+    // skin stays dense although it is long and close (its length is a whole
+    // number of rings, so they stay on the ring crests).
+    const boost = swimming ? 1.35 : 1;
     for (let k = 0; k < count; k++) {
-      const s = this.skinS[k] * 40;
+      const raw = this.skinS[k] * 40;
+      const s = swimming ? raw % ev.length : raw;
       if (s >= ev.length) continue;
       const fi = s / ds;
       const i = Math.min(NODES - 2, fi | 0);
       const f = fi - i;
-      const c = this.skinCos[k];
+      let c = this.skinCos[k];
       const sn = this.skinSin[k];
+      // Half buried, the swimmer's underside is never seen: fold those
+      // particles onto its back, which doubles the visible skin.
+      if (swimming && c * this.ay[i] + sn * this.by[i] < -0.15) c = -c;
       const nx = c * this.ax[i] + sn * this.bx[i];
       const ny = c * this.ay[i] + sn * this.by[i];
       const nz = c * this.az[i] + sn * this.bz[i];
@@ -533,10 +671,11 @@ export class SandWorm {
         (0.1 + 0.32 * facing + 0.36 * diffuse + 0.58 * rim) *
           (0.3 + 0.7 * ridge) *
           this.skinPlate[k] *
-          (0.75 + 0.5 * seed) +
+          (0.75 + 0.5 * seed) *
+          boost +
         dusted;
       const bucket = Math.min(BUCKETS - 1, Math.floor(clamp01(light) * BUCKETS));
-      const size = Math.min(2, Math.max(0.8, 2.8 / Math.sqrt(z))) * (0.85 + 0.4 * seed);
+      const size = Math.min(2, Math.max(swimming ? 1 : 0.8, 2.8 / Math.sqrt(z))) * (0.85 + 0.4 * seed);
       lists[bucket].push(sx, sy, size);
 
       if (Math.random() < shed) {
