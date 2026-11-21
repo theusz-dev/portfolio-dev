@@ -6,6 +6,7 @@ import theme from "../../../_components/theme.module.css";
 import { ObservatorioProject } from "../../_components/ObservatorioProject";
 import { Experience } from "../Experience";
 import { Reading } from "../Reading";
+import { Skills } from "../Skills";
 import { variants, type Variant } from "../variants";
 
 export const dynamicParams = false;
@@ -28,12 +29,17 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 
 export default async function ReadingPage(props: Props) {
   const variant = await variantFrom(props);
-  const showExperience = variant === "meridiano";
+  const isMeridiano = variant === "meridiano";
   return (
     <main className={theme.theme + " " + fontVariables}>
-      <HorizonteHero experienceId={showExperience ? "experiencia" : undefined} />
+      <HorizonteHero sectionLinks={isMeridiano ? { Experiência: "#experiencia", Habilidades: "#habilidades", IA: "#ia" } : undefined} />
       <Reading variant={variant} />
-      {showExperience && <Experience />}
+      {isMeridiano && (
+        <>
+          <Experience />
+          <Skills />
+        </>
+      )}
       <ObservatorioProject />
     </main>
   );

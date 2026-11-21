@@ -1,0 +1,8 @@
+[
+  {
+    "title": { "pt": "Agentes de IA no desenvolvimento", "en": "AI agents in development" },
+    "description": { "pt": "Uso de agentes de IA para acelerar entregas, apoiar a evolução do código e manter o foco em qualidade durante o desenvolvimento.", "en": "Uses AI agents to accelerate delivery, support code evolution, and keep a focus on quality during development." },
+    "tools": ["Codex", "Windsurf"],
+    "relatedPost": null
+  }
+]

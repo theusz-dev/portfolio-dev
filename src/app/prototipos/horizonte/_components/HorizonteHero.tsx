@@ -15,14 +15,13 @@ export function SmallCaps({ word, className }: { word: string; className?: strin
 export function HorizonteHero({
   aboutId = "sobre",
   projectId = "projeto",
-  experienceId,
+  sectionLinks,
 }: {
   aboutId?: string;
   projectId?: string;
-  experienceId?: string;
+  sectionLinks?: Partial<Record<(typeof profile.sections)[number], string>>;
 }) {
-  const destinations: Record<string, string> = { Projetos: `#${projectId}` };
-  if (experienceId) destinations["Experiência"] = `#${experienceId}`;
+  const destinations = { Projetos: `#${projectId}`, ...sectionLinks };
   return (
     <section className={s.hero} aria-labelledby="horizonte-title">
       <div className={s.frame}>
