@@ -128,7 +128,6 @@
   color: var(--muted);
 }
 
-.caption { margin-top: 22px; }
 
 .meta {
   display: flex;
@@ -205,4 +204,20 @@
   .twinkle,
   .plate:hover .before,
   .plate:hover .after { animation: none; }
+}
+
+/* The caption shares a grid cell with its dune valley (CaptionScape.tsx);
+   the plate isolates the stacking so the valley stays behind the words. */
+.plate {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  isolation: isolate;
+}
+.glass { grid-area: 1 / 1; }
+.caption {
+  grid-area: 2 / 1;
+  padding: 24px 4px 46px;
+}
+.caption > * {
+  text-shadow: 0 0 14px #000, 0 0 4px #000, 0 0 2px #000;
 }

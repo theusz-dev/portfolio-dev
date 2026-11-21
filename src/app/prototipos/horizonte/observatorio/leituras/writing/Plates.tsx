@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { format, href } from "@/i18n/config";
+import { CaptionScape } from "./CaptionScape";
 import type { Post } from "@/lib/blog/posts";
 import { round, seeded } from "./seed";
 import { postPath, type WritingProps } from "./types";
@@ -204,6 +205,7 @@ export function Plates({ lang, posts, t }: WritingProps) {
               <span className={s.stamp}>{plateDate(post.date)}</span>
             </div>
 
+            <CaptionScape seed={post.slug} />
             <div className={s.caption}>
               <p className={s.meta}>
                 <span>{t.blogs[post.collection]}</span>
