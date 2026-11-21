@@ -4,6 +4,7 @@ import { HorizonteHero } from "../../../_components/HorizonteHero";
 import { fontVariables } from "../../../_components/fonts";
 import theme from "../../../_components/theme.module.css";
 import { ObservatorioProject } from "../../_components/ObservatorioProject";
+import { Experience } from "../Experience";
 import { Reading } from "../Reading";
 import { variants, type Variant } from "../variants";
 
@@ -27,10 +28,12 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 
 export default async function ReadingPage(props: Props) {
   const variant = await variantFrom(props);
+  const showExperience = variant === "meridiano";
   return (
     <main className={theme.theme + " " + fontVariables}>
-      <HorizonteHero />
+      <HorizonteHero experienceId={showExperience ? "experiencia" : undefined} />
       <Reading variant={variant} />
+      {showExperience && <Experience />}
       <ObservatorioProject />
     </main>
   );

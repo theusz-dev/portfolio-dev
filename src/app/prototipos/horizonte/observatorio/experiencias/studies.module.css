@@ -1,0 +1,129 @@
+.section {
+  max-width: 1340px;
+  margin: auto;
+  padding: clamp(44px, 6vw, 88px) clamp(16px, 3.8vw, 54px);
+  display: grid;
+  grid-template-columns: minmax(0, .78fr) minmax(0, 1.22fr);
+  align-items: start;
+  gap: clamp(42px, 6vw, 96px);
+}
+.intro h2 {
+  color: var(--ink);
+  font: 400 clamp(3.5rem, 5.8vw, 5.7rem)/.93 var(--serif);
+  letter-spacing: -.05em;
+}
+.intro em { color: var(--ink-soft); font-weight: 300; }
+.label, .period, .stack {
+  color: #b9b3a8;
+  font: 400 .73rem/1.6 var(--mono);
+}
+.label, .period { text-transform: uppercase; letter-spacing: .09em; }
+.label { margin-bottom: 20px; }
+.body, .lead {
+  color: var(--ink-soft);
+  font: 400 clamp(1.2rem, 1.45vw, 1.38rem)/1.45 var(--serif);
+}
+.lead { max-width: 37ch; margin: 22px 0 0; }
+.body { margin-top: 12px; max-width: 54ch; }
+.stack { margin-top: 14px; color: #aaa49b; }
+.section h3, .employer h4 {
+  font: 400 clamp(2rem, 2.85vw, 2.8rem)/1.05 var(--serif);
+  margin: 8px 0 0;
+  letter-spacing: -.035em;
+  text-wrap: balance;
+}
+.company { font: italic 1.3rem/1.3 var(--serif); color: var(--ink-soft); margin-top: 5px; }
+
+/* Alvorada — the start year is the margin of each entry. */
+.path li { display: grid; grid-template-columns: auto 1fr; column-gap: 20px; }
+.year {
+  font: italic 300 clamp(1.75rem, 2.6vw, 2.6rem)/1 var(--serif);
+  color: #bfb29a; letter-spacing: -.05em;
+}
+.stop { position: relative; border-left: 1px solid var(--line); padding: 0 0 38px 24px; }
+.stop::before {
+  content: ''; position: absolute; left: -4px; top: 8px; width: 7px; height: 7px;
+  border-radius: 50%; background: #d9ccb8; box-shadow: 0 0 10px #d4b78655;
+}
+.path li:last-child .stop { border-color: transparent; padding-bottom: 0; }
+
+/* Díptico — each employer heads its own ruled set of roles. */
+.diptico { grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr); }
+.diptico .intro {
+  padding: clamp(24px, 2.8vw, 44px);
+  border: 1px solid var(--line);
+  background: radial-gradient(ellipse at 0 0, #22211f, var(--frame) 75%);
+}
+.diptico .intro h2 { font-size: clamp(2.9rem, 4.6vw, 4.5rem); }
+.diptico .lead { margin-bottom: 28px; }
+.employer { border-top: 1px solid var(--line-strong); }
+.employer + .employer { margin-top: 38px; }
+.employer h3 {
+  margin: 14px 0 20px;
+  font-size: clamp(2.25rem, 3.7vw, 3.5rem);
+  font-variant-caps: small-caps;
+}
+.employer li { padding: 2px 0 0 22px; border-left: 1px solid var(--line); position: relative; }
+.employer li::before {
+  content: ''; position: absolute; left: -1px; top: 10px; width: 10px; border-top: 1px solid #bbaf99;
+}
+.employer li + li { padding-top: 26px; }
+.employer li + li::before { top: 36px; }
+.employer h4 { font-size: clamp(1.65rem, 2.25vw, 2.15rem); }
+
+/* Fases — the project leads each entry, with a lunar plate in the facing margin. */
+.fases { grid-template-columns: minmax(0, 1.12fr) minmax(0, .88fr); }
+.fases .intro {
+  grid-column: 2; grid-row: 1;
+  position: relative; isolation: isolate; overflow: hidden;
+  padding: clamp(26px, 3.2vw, 48px);
+  border-block: 1px solid var(--line);
+  background: linear-gradient(155deg, #141413 0%, #101010 65%, #1d1c19);
+}
+.fases .lead { max-width: 31ch; }
+.lunar {
+  position: relative; height: clamp(90px, 12vw, 175px); margin-top: 14px;
+  background: url('../leituras/lua.webp') right 18% bottom -35px / auto 115% no-repeat;
+}
+.lunar::before {
+  content: ''; position: absolute; inset: 60% -12% auto; height: 1px;
+  background: linear-gradient(90deg, transparent, #b1a99888, transparent);
+  transform: rotate(-11deg);
+}
+.lunar i {
+  position: absolute; left: 22%; top: 71%; width: 4px; height: 4px; border-radius: 50%;
+  background: #f6ead2; box-shadow: 0 0 10px 2px #dfd2b454;
+  animation: glimmer 8s ease-in-out infinite alternate;
+}
+@keyframes glimmer { to { opacity: .45; } }
+.deliveries { grid-column: 1; grid-row: 1; }
+.deliveries li { position: relative; border-top: 1px solid var(--line); padding: 18px 0 32px 34px; }
+.deliveries li::before {
+  content: ''; position: absolute; left: 0; top: 20px; width: 15px; height: 15px;
+  border: 1px solid #c2b99e; border-radius: 50%;
+  background: #e9ddc5; box-shadow: 0 0 13px #dfd2b431;
+}
+.deliveries li:nth-child(2)::before { background: linear-gradient(90deg, transparent 50%, #d6c9b0 50%); }
+.deliveries li:nth-child(3)::before { background: transparent; box-shadow: inset -3px 0 #d6c9b0; }
+.byline { margin-top: 8px; color: #c4bbaa; font: italic 1.2rem/1.35 var(--serif); }
+.byline span { padding-inline: .14em; }
+
+@media (min-width: 841px) and (min-height: 680px) {
+  .section .intro { position: sticky; top: 5vh; }
+}
+@media (max-width: 840px) {
+  .section { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+  .fases .intro, .deliveries { grid-column: auto; grid-row: auto; }
+  .alvorada .intro h2 br, .fases .intro h2 br { display: none; }
+  .alvorada .intro em::before, .fases .intro em::before { content: ' '; }
+  .path li { grid-template-columns: 1fr; }
+  .year { display: none; }
+  .stop { margin-left: 4px; padding-left: 18px; }
+  .diptico .intro { padding: 20px; }
+  .fases .intro { padding: 22px 18px 12px; }
+  .lunar { height: 77px; margin-top: 8px; }
+  .deliveries li { padding-left: 26px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lunar i { animation: none; }
+}

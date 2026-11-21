@@ -1,0 +1,176 @@
+.section {
+  max-width: 1340px;
+  margin: 0 auto;
+  padding: clamp(44px, 5.6vw, 88px) clamp(16px, 3.8vw, 54px);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, .83fr) clamp(60px, 8vw, 116px) minmax(0, 1.17fr);
+  align-items: start;
+}
+
+.intro h2 {
+  color: var(--ink);
+  font: 400 clamp(3.3rem, 5.3vw, 5rem)/1 var(--serif);
+  letter-spacing: -.047em;
+  text-shadow: 0 0 28px var(--glow);
+}
+
+.intro > p, .description {
+  font: 400 clamp(1.2rem, 1.5vw, 1.4rem)/1.48 var(--serif);
+  color: var(--ink-soft);
+}
+
+.intro > p { max-width: 36ch; margin: 22px 0 26px; }
+
+.chart {
+  --label: clamp(98px, 10vw, 132px);
+  position: relative;
+  isolation: isolate;
+  padding: 20px 14px 38px 0;
+  border-block: 1px solid var(--line);
+  font: 400 .68rem/1.5 var(--mono);
+}
+
+.chart::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: url('./dunas-distantes.webp') bottom / 100% 30% no-repeat;
+  opacity: .45;
+}
+
+.years, .track { display: grid; }
+.years {
+  margin-left: var(--label);
+  color: var(--muted);
+  font-size: .65rem;
+  letter-spacing: .06em;
+}
+.chartRow {
+  display: grid;
+  grid-template-columns: var(--label) 1fr;
+  align-items: center;
+  color: var(--ink-soft);
+}
+.track { height: 34px; position: relative; align-items: stretch; }
+.track i { border-left: 1px dashed var(--line); }
+.track b {
+  position: absolute;
+  top: 50%;
+  height: 1px;
+  background: linear-gradient(90deg, #79746d, #eee2cd);
+}
+.track b::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  transform: translate(50%, -50%);
+  background: #f0e5d2;
+  box-shadow: 0 0 9px #efd9ac70;
+}
+.years + .chartRow .track b::after { animation: starlight 8s ease-in-out infinite alternate; }
+@keyframes starlight { to { box-shadow: 0 0 13px 2px #efd9ac88; } }
+
+.timeline {
+  display: grid;
+  gap: clamp(44px, 4.5vw, 70px);
+  margin: 0 0 0 clamp(12px, 1.4vw, 22px);
+}
+.entry {
+  border-top: 1px solid #ece8e133;
+  position: relative;
+  padding-top: 18px;
+}
+.entry::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -1px;
+  width: 32px;
+  height: 1px;
+  background: #d2c6b0;
+}
+.entryMeta {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 16px;
+}
+.period, .stack, .company { font: 400 .73rem/1.6 var(--mono); }
+.period { color: #b7b0a4; letter-spacing: .035em; }
+.company { color: var(--ink); letter-spacing: .085em; text-transform: uppercase; }
+.entry h3 {
+  margin-top: 16px;
+  font: 400 clamp(2rem, 3.1vw, 3rem)/1.05 var(--serif);
+  letter-spacing: -.035em;
+  text-wrap: balance;
+}
+.description { max-width: 51ch; margin-top: 15px; }
+.stack { margin-top: 12px; color: var(--muted); }
+
+.ridge {
+  position: relative;
+  align-self: stretch;
+  container-type: size;
+  --ridge-width: 28cqw;
+  --star-travel: min(26vh, 230px);
+}
+.ridge::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100cqh;
+  height: 100cqw;
+  transform: translate(-50%, -50%) rotate(90deg);
+  background: url('./dunas-proximas.webp') center / 100% var(--ridge-width) no-repeat,
+              url('./dunas-distantes.webp') center / 100% var(--ridge-width) no-repeat;
+  mask-image: linear-gradient(90deg, transparent, black 4% 96%, transparent);
+}
+.starTrack {
+  position: sticky;
+  top: 32vh;
+  height: var(--star-travel);
+}
+.star {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #fff4dc;
+  box-shadow: 0 0 6px 2px #ffe4ae88, 0 0 21px 5px #e9c79340;
+  transform: translate(
+    calc(-50% + var(--crest, .23) * var(--ridge-width)),
+    calc(var(--progress, 0) * (var(--star-travel) - 100%))
+  );
+  transition: transform 300ms cubic-bezier(.2, .65, .25, 1);
+}
+
+@media (min-width: 821px) and (min-height: 630px) {
+  .intro { position: sticky; top: clamp(28px, 7vh, 72px); }
+}
+@media (max-width: 820px) {
+  .layout { grid-template-columns: 28px minmax(0, 1fr); row-gap: 36px; }
+  .intro { grid-column: 1 / -1; }
+  .star { width: 6px; height: 6px; }
+  .intro > p { max-width: 48ch; }
+  .chart { max-width: 460px; }
+  .timeline { margin-left: 10px; gap: 40px; }
+  .entryMeta { flex-direction: column; gap: 2px; }
+  .ridge { --ridge-width: 42cqw; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .years + .chartRow .track b::after { animation: none; }
+  .starTrack { position: absolute; inset: 30% 0 auto; height: 0; }
+  .star { transition: none; transform: translateX(-50%); }
+}

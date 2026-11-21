@@ -15,10 +15,14 @@ export function SmallCaps({ word, className }: { word: string; className?: strin
 export function HorizonteHero({
   aboutId = "sobre",
   projectId = "projeto",
+  experienceId,
 }: {
   aboutId?: string;
   projectId?: string;
+  experienceId?: string;
 }) {
+  const destinations: Record<string, string> = { Projetos: `#${projectId}` };
+  if (experienceId) destinations["Experiência"] = `#${experienceId}`;
   return (
     <section className={s.hero} aria-labelledby="horizonte-title">
       <div className={s.frame}>
@@ -32,7 +36,7 @@ export function HorizonteHero({
           </a>
           <nav className={s.nav} aria-label="Seções">
             {profile.sections.map((section) => (
-              <a key={section} href={section === "Projetos" ? `#${projectId}` : "#"}>
+              <a key={section} href={destinations[section] ?? "#"}>
                 {section}
               </a>
             ))}
