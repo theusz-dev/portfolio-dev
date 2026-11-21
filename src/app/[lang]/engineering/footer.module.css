@@ -1,0 +1,107 @@
+/* The footer, under the portfolio's closing landscape (ParticleNightfall). */
+
+/* ---------- Footer ---------- */
+
+.footer {
+  --horizon: clamp(280px, 30vw, 460px);
+  position: relative;
+  z-index: 1;
+  margin-top: clamp(72px, 9vw, 128px);
+  /* The sky shows above the dunes; below them the ground is solid. */
+  background: linear-gradient(transparent var(--horizon), var(--bg) var(--horizon));
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.scene {
+  position: relative;
+  height: var(--horizon);
+  overflow: hidden;
+  background: var(--bg);
+  /* Fade in from the page above, so the sky meets the Firmamento. */
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 30%, #000 72%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, #000 30%, #000 72%, transparent);
+}
+
+.sceneCanvas {
+  position: absolute;
+  inset: 0;
+}
+
+.footerGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: 40px 32px;
+  padding-top: clamp(32px, 4vw, 48px);
+  padding-bottom: clamp(40px, 5vw, 64px);
+}
+
+.footerName {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: 2rem;
+  font-weight: 300;
+  line-height: 1;
+}
+
+.footerMark {
+  width: 18px;
+  height: 18px;
+}
+
+.footerBrand p {
+  max-width: 22rem;
+  margin-top: 1rem;
+  line-height: 1.6;
+}
+
+.footerHeading {
+  margin-bottom: 1rem;
+  color: var(--faint);
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.footerCol li + li {
+  margin-top: 0.625rem;
+}
+
+.footerCol a,
+.footerBottom a {
+  color: var(--muted);
+  transition: color 0.2s ease;
+}
+
+.footerCol a:hover,
+.footerBottom a:hover {
+  color: var(--ink);
+}
+
+.footerBottom {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+  padding-top: 1.5rem;
+  padding-bottom: 2.5rem;
+  border-top: 1px solid var(--line);
+  color: var(--faint);
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 760px) {
+  .footerGrid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+  .footerBrand {
+    grid-column: 1 / -1;
+  }
+}

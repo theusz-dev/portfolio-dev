@@ -1,0 +1,591 @@
+/* Reading page. Built for long, effortful reading: one calm column of about
+   70 characters, a softer ink for body text than for titles, generous
+   leading, and nothing moving next to the words. The only motion is the sky
+   behind the title, which fades out before the text. */
+
+.main {
+  --measure: 42.5rem;
+}
+
+/* Title area, the same width as the text column. */
+.hero {
+  position: relative;
+}
+
+.head,
+.pager,
+.all {
+  width: 100%;
+  max-width: calc(var(--measure) + var(--gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.head {
+  position: relative;
+  z-index: 1;
+  padding-top: clamp(32px, 4vw, 56px);
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--muted);
+  transition: color 0.2s ease;
+}
+
+.back:hover {
+  color: var(--ink);
+}
+
+.backArrow {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.3s var(--ease);
+}
+
+.back:hover .backArrow {
+  transform: translateX(-3px);
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.5rem;
+  margin-top: clamp(28px, 4vw, 44px);
+}
+
+.title {
+  margin-top: 1.25rem;
+  color: var(--ink);
+  font-size: clamp(2rem, 1.25rem + 3vw, 3.25rem);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+.lead {
+  margin-top: 1.5rem;
+  color: var(--muted);
+  font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem);
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+
+.tags {
+  margin-top: 2rem;
+}
+
+.tags a {
+  display: block;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.tags a:hover {
+  border-color: var(--line-strong);
+  color: var(--ink);
+}
+
+.notes {
+  margin-top: 1.25rem;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.notes p + p {
+  margin-top: 0.25rem;
+}
+
+/* ---------- Text column + side index ---------- */
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, var(--measure)) minmax(0, 1fr);
+  column-gap: clamp(24px, 4vw, 64px);
+  padding-inline: var(--gutter);
+}
+
+.prose {
+  grid-column: 2;
+  margin-top: clamp(40px, 5vw, 56px);
+  padding-top: clamp(40px, 5vw, 56px);
+  border-top: 1px solid var(--line);
+}
+
+.side {
+  grid-column: 3;
+  margin-top: clamp(40px, 5vw, 56px);
+  padding-top: clamp(40px, 5vw, 56px);
+}
+
+@media (max-width: 1180px) {
+  .layout {
+    grid-template-columns: minmax(0, var(--measure));
+    justify-content: center;
+    padding-inline: var(--gutter);
+  }
+  .prose {
+    grid-column: 1;
+  }
+  .side {
+    display: none;
+  }
+}
+
+/* ---------- Side index ---------- */
+
+.toc {
+  position: sticky;
+  top: 88px;
+  max-width: 15rem;
+  animation: appear 0.6s ease both;
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+  }
+}
+
+.tocTitle {
+  margin-bottom: 0.75rem;
+  color: var(--faint);
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.toc a {
+  display: block;
+  padding: 0.3rem 0 0.3rem 0.875rem;
+  border-left: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  transition: color 0.25s ease, border-color 0.25s ease;
+}
+
+.toc [data-level="3"] a {
+  padding-left: 1.625rem;
+}
+
+.toc a:hover {
+  color: var(--ink);
+}
+
+.toc a[aria-current] {
+  border-left-color: var(--ink);
+  color: var(--ink);
+}
+
+/* ---------- Prose ---------- */
+
+.prose {
+  color: var(--text);
+  font-size: clamp(1.0625rem, 0.98rem + 0.3vw, 1.1875rem);
+  line-height: 1.75;
+  overflow-wrap: break-word;
+}
+
+.prose > * + * {
+  margin-top: 1.35em;
+}
+
+.prose p {
+  text-wrap: pretty;
+}
+
+.prose h2,
+.prose h3,
+.prose h4 {
+  position: relative;
+  color: var(--ink);
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+  scroll-margin-top: 88px;
+}
+
+.prose h2 {
+  margin-top: 2.5em;
+  font-size: 1.45em;
+  line-height: 1.25;
+}
+
+.prose h3 {
+  margin-top: 2em;
+  font-size: 1.18em;
+  line-height: 1.35;
+}
+
+.prose h4 {
+  margin-top: 1.75em;
+  font-size: 1em;
+  font-weight: 600;
+}
+
+.prose :is(h2, h3, h4) + * {
+  margin-top: 0.75em;
+}
+
+.anchor {
+  position: absolute;
+  left: -1.1em;
+  width: 1em;
+  color: var(--faint);
+  font-family: var(--mono);
+  font-weight: 400;
+  opacity: 0;
+  transition: opacity 0.2s ease, color 0.2s ease;
+}
+
+:is(h2, h3, h4):hover > .anchor,
+.anchor:focus-visible {
+  opacity: 1;
+}
+
+.anchor:hover {
+  color: var(--ink);
+}
+
+@media (max-width: 760px) {
+  .anchor {
+    display: none;
+  }
+}
+
+.prose strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.prose a:not(.anchor) {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--line-strong);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+  transition: text-decoration-color 0.2s ease;
+}
+
+.prose a:not(.anchor):hover {
+  text-decoration-color: currentColor;
+}
+
+/* Lists: a short dash for bullets, two-digit mono numbers for steps. */
+.prose ul,
+.prose ol {
+  padding-left: 1.5em;
+}
+
+.prose ol {
+  padding-left: 2.1em;
+  counter-reset: step;
+}
+
+.prose li {
+  position: relative;
+}
+
+.prose li + li,
+.prose li > :is(ul, ol) {
+  margin-top: 0.5em;
+}
+
+.prose ul > li::before {
+  content: "";
+  position: absolute;
+  top: 0.85em;
+  left: -1.1em;
+  width: 0.45em;
+  height: 1px;
+  background: var(--muted);
+}
+
+.prose ol > li {
+  counter-increment: step;
+}
+
+.prose ol > li::before {
+  content: counter(step, decimal-leading-zero);
+  position: absolute;
+  top: 0.32em;
+  left: -2.1em;
+  color: var(--faint);
+  font-family: var(--mono);
+  font-size: 0.75em;
+  line-height: 1.75;
+}
+
+.prose blockquote {
+  padding-left: 1.25em;
+  border-left: 2px solid var(--line-strong);
+  color: var(--muted);
+  font-style: italic;
+}
+
+.prose blockquote > * + * {
+  margin-top: 0.75em;
+}
+
+.prose hr {
+  height: 1px;
+  margin-block: 3em;
+  border: 0;
+  background: linear-gradient(90deg, transparent, var(--line-strong), transparent);
+}
+
+.prose img {
+  height: auto;
+  margin-inline: auto;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+
+/* ---------- Code ---------- */
+
+.prose code {
+  font-family: var(--mono);
+  font-variant-ligatures: none;
+}
+
+.prose :not(pre) > code {
+  padding: 0.12em 0.38em;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background: var(--line);
+  color: var(--ink);
+  font-size: 0.84em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+.prose > figure,
+.prose > figure + *,
+.prose > .tableWrap,
+.prose > .tableWrap + * {
+  margin-top: 1.75em;
+}
+
+.code {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--code-bg);
+}
+
+.codeBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 38px;
+  padding: 0 6px 0 16px;
+  border-bottom: 1px solid var(--line);
+  color: var(--faint);
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  text-transform: lowercase;
+}
+
+.copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 26px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.copy:hover,
+.copy[data-copied] {
+  background: var(--hover);
+  color: var(--ink);
+}
+
+.copy svg {
+  width: 13px;
+  height: 13px;
+}
+
+.code pre {
+  margin: 0;
+  padding: 16px 0;
+  overflow-x: auto;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  tab-size: 2;
+}
+
+.code pre code {
+  display: grid;
+  min-width: max-content;
+}
+
+.code pre [data-line] {
+  padding: 0 20px;
+}
+
+.code pre [data-highlighted-line] {
+  background: var(--hover);
+  box-shadow: inset 2px 0 0 var(--muted);
+}
+
+.code pre [data-highlighted-chars] {
+  border-radius: 3px;
+  background: var(--line);
+}
+
+.prose figcaption[data-rehype-pretty-code-title] {
+  padding: 0.5rem 1rem;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.75rem;
+}
+
+/* Token colours: rehype-pretty-code emits both themes as variables. */
+.prose pre span {
+  color: var(--shiki-light);
+}
+
+@media (prefers-color-scheme: dark) {
+  :global(html:not([data-theme="light"])) .prose pre span {
+    color: var(--shiki-dark);
+  }
+}
+
+:global(html[data-theme="dark"]) .prose pre span {
+  color: var(--shiki-dark);
+}
+
+/* On phones, code runs edge to edge so lines have room. */
+@media (max-width: 640px) {
+  .code {
+    margin-inline: calc(var(--gutter) * -1);
+    border-inline: 0;
+    border-radius: 0;
+  }
+  .code pre [data-line] {
+    padding: 0 var(--gutter);
+  }
+  .codeBar {
+    padding-left: var(--gutter);
+  }
+}
+
+/* ---------- Tables ---------- */
+
+.tableWrap {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9em;
+  line-height: 1.55;
+}
+
+.prose th {
+  background: var(--hover);
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.75em;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.prose th,
+.prose td {
+  padding: 0.65em 1em;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+
+.prose tr:last-child td {
+  border-bottom: 0;
+}
+
+/* ---------- After the article ---------- */
+
+.pager {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: clamp(56px, 8vw, 88px);
+}
+
+.pagerLink {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 18px 20px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.pagerLink:hover {
+  border-color: var(--line-strong);
+  background: var(--hover);
+}
+
+.pagerLink > span:first-child {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.pagerOlder {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.pagerArrow {
+  width: 13px;
+  height: 13px;
+}
+
+.pagerTitle {
+  color: var(--ink);
+  font-weight: 500;
+  line-height: 1.4;
+  text-wrap: balance;
+}
+
+.all {
+  margin-top: 28px;
+  text-align: center;
+}
+
+.all a {
+  color: var(--muted);
+  transition: color 0.2s ease;
+}
+
+.all a:hover {
+  color: var(--ink);
+}
+
+@media (max-width: 640px) {
+  .pager {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .pager > span:empty {
+    display: none;
+  }
+}
