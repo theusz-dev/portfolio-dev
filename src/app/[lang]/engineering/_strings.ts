@@ -4,7 +4,7 @@ import type { Localized } from "@/i18n/config";
 export const strings = {
   pt: {
     name: "Engenharia",
-    author: "Matheus Fernandes",
+    author: "theusz.dev",
     kicker: "Caderno técnico",
     description: "Bastidores do que ando construindo: decisões de arquitetura, experimentos com código e coisas que aprendi resolvendo problemas reais.",
     portfolio: "Portfólio",
@@ -42,7 +42,7 @@ export const strings = {
   },
   en: {
     name: "Engineering",
-    author: "Matheus Fernandes",
+    author: "theusz.dev",
     kicker: "Technical notebook",
     description: "Behind the scenes of what I'm building: architecture choices, code experiments, and lessons learned solving real problems.",
     portfolio: "Portfolio",

@@ -6,7 +6,7 @@ import type { Locale } from "@/i18n/config";
 /** Profile data that reads the same in every language. */
 const base = {
   name: "Matheus Fernandes da Silva",
-  shortName: "Matheus Fernandes",
+  shortName: "theusz.dev",
   firstName: "Matheus",
   lastName: "Fernandes",
   initials: "MF",
