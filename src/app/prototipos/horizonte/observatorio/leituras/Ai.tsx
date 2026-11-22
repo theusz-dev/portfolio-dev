@@ -12,8 +12,8 @@ const thesisText = {
     context: "Pesquisa · TCC",
     title: "Sistema Inteligente de Análise de Inversores Fotovoltaicos",
     subtitle: "Detecção de anomalias e interpretação por LLM",
-    text: "Construí um sistema que lê a telemetria real de 15 inversores da UFG, compara métodos de detecção de anomalias e gera pré-laudos técnicos com um modelo de linguagem local, ancorados em manuais e normas.",
-    principle: "O código calcula e decide os alertas; o modelo de linguagem só interpreta.",
+    text: "No meu trabalho de conclusão de curso, criei um sistema que acompanha a telemetria real de 15 inversores solares da UFG, cruza diferentes métodos de detecção de falhas e usa um modelo de linguagem rodando localmente para redigir pré-laudos técnicos baseados nos manuais e normas.",
+    principle: "Quem faz a conta e dispara o alerta é o código; o modelo de linguagem entra apenas para traduzir os dados em texto técnico.",
     pipeline: [
       { name: "Telemetria", note: "15 inversores, só leitura" },
       { name: "Detectores", note: "regras, pares, Isolation Forest" },
@@ -23,9 +23,9 @@ const thesisText = {
       { name: "Revisão humana", note: "veredito e critérios" },
     ],
     facts: [
-      "Protocolo de avaliação fixado antes do teste",
-      "Cada frase do pré-laudo cita a evidência ou o trecho que a sustenta",
-      "Sem nuvem: o modelo roda localmente",
+      "Critérios de avaliação definidos antes de rodar os experimentos",
+      "Cada afirmação do pré-laudo aponta para a medição ou trecho do manual de onde veio",
+      "Zero dependência de nuvem: o modelo roda 100% local em CPU",
     ],
     status: "Defesa em 30/11/2026",
   },
@@ -33,8 +33,8 @@ const thesisText = {
     context: "Research · Final thesis",
     title: "Intelligent Analysis System for Photovoltaic Inverters",
     subtitle: "Anomaly detection and LLM interpretation",
-    text: "I built a system that reads live telemetry from 15 inverters at UFG, compares anomaly detection methods and writes draft technical reports with a local language model, grounded in manuals and standards.",
-    principle: "The code computes and decides the alerts; the language model only interprets them.",
+    text: "For my undergraduate thesis, I built a system that monitors real telemetry from 15 solar inverters at UFG, compares anomaly detection methods, and uses a local language model to draft technical reports grounded in equipment manuals and standards.",
+    principle: "Deterministic code does the math and triggers the alerts; the language model is only there to translate the findings into a readable draft.",
     pipeline: [
       { name: "Telemetry", note: "15 inverters, read-only" },
       { name: "Detectors", note: "rules, peers, Isolation Forest" },
@@ -44,9 +44,9 @@ const thesisText = {
       { name: "Human review", note: "verdict and criteria" },
     ],
     facts: [
-      "Evaluation protocol fixed before testing",
-      "Every sentence in the draft report cites the evidence or passage behind it",
-      "No cloud: the model runs locally",
+      "Evaluation protocol locked in before running the tests",
+      "Every claim in the draft report cites the exact reading or manual excerpt behind it",
+      "No cloud APIs: the model runs entirely locally on CPU",
     ],
     status: "Defence on 30 Nov 2026",
   },
@@ -58,12 +58,12 @@ const memoraText = {
   pt: {
     context: "Projeto pessoal",
     title: "Flashcards com tutor de IA",
-    text: "App Flutter offline-first que gera cards a partir de texto e PDF e oferece um tutor especializado por deck, usando a chave de API do próprio usuário.",
+    text: "Um app de estudos em Flutter que transforma textos e PDFs em flashcards, funciona offline e traz um tutor de IA focado na matéria de cada deck — usando a chave de API do próprio usuário.",
   },
   en: {
     context: "Personal project",
     title: "Flashcards with an AI tutor",
-    text: "An offline-first Flutter app that generates cards from text and PDFs and offers a tutor specialised in each deck, using the user's own API key.",
+    text: "An offline-first Flutter study app that turns texts and PDFs into flashcards and includes an AI tutor scoped to each deck's subject — running on the user's own API key.",
   },
 } satisfies Record<Locale, unknown>;
 const memoraInfo = {

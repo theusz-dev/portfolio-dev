@@ -1,7 +1,7 @@
 [
   {
-    "title": { "pt": "Agentes de IA no desenvolvimento", "en": "AI agents in development" },
-    "description": { "pt": "Uso de agentes de IA para acelerar entregas, apoiar a evolução do código e manter o foco em qualidade durante o desenvolvimento.", "en": "Uses AI agents to accelerate delivery, support code evolution, and keep a focus on quality during development." },
+    "title": { "pt": "Agentes de IA no fluxo de trabalho", "en": "AI agents in my daily workflow" },
+    "description": { "pt": "Uso agentes de código no dia a dia para explorar soluções mais rápido, destravar tarefas repetitivas e ter mais tempo para focar na arquitetura e nos detalhes que importam.", "en": "I use coding agents daily to explore ideas faster, handle repetitive tasks, and free up time to focus on architecture and the details that actually matter." },
     "tools": ["Codex", "Windsurf", "Claude Code"],
     "relatedPost": null
   }

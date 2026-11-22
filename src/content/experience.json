@@ -5,8 +5,8 @@
     "role": { "pt": "Desenvolvedor Full Stack", "en": "Full-Stack Developer" },
     "period": { "start": "2026-01", "end": "2026-11" },
     "highlights": {
-      "pt": ["Manutenção e evolução de aplicativos Flutter em produção para Android e iOS, com novas funcionalidades e correção de bugs reportados por usuários.", "Desenvolvimento de interfaces web em Angular e back-end em PHP/Laravel, incluindo painéis administrativos com Filament.", "Participação no ciclo completo de desenvolvimento, da concepção à entrega, com atenção à performance e à qualidade do código."],
-      "en": ["Maintained and evolved production Flutter applications for Android and iOS, delivering new features and fixing user-reported bugs.", "Built Angular web interfaces and PHP/Laravel back ends, including administrative panels with Filament.", "Participated in the full development cycle, from conception to delivery, focusing on performance and code quality."]
+      "pt": ["Evolução de aplicativos Flutter em produção para Android e iOS, entregando funcionalidades novas e resolvendo problemas reportados por usuários reais.", "Criação de interfaces web em Angular e serviços em PHP/Laravel, além de painéis administrativos com Filament.", "Trabalho próximo ao produto do início ao fim de cada entrega, cuidando tanto da fluidez da interface quanto da organização do código."],
+      "en": ["Evolved production Flutter apps for Android and iOS, shipping new features and fixing bugs reported by real users.", "Built Angular web interfaces and PHP/Laravel back-end services, along with internal admin panels using Filament.", "Worked across the whole delivery cycle from initial idea to release, keeping an eye on UI smoothness and clean code."]
     }
   },
   {
@@ -15,8 +15,8 @@
     "role": { "pt": "Desenvolvedor Mobile (Freelance)", "en": "Mobile Developer (Freelance)" },
     "period": { "start": "2024-08", "end": "2025-11" },
     "highlights": {
-      "pt": ["Desenvolvimento de funcionalidades em Flutter para o app Revela Fácil, da Fujioka, com fidelidade ao design no Figma e integração de APIs de autenticação e produtos.", "Entrega de um aplicativo Flutter completo para uma startup de construção civil, com mais de 30 telas integradas a mais de 60 rotas de API.", "Organização remota de prazos e entregas incrementais em comunicação direta com o cliente; a parceria resultou em contratação efetiva pela Umobi."],
-      "en": ["Developed Flutter features for Fujioka's Revela Fácil app, faithfully implementing Figma designs and integrating authentication and product APIs.", "Delivered a complete Flutter app for a construction-tech startup, with more than 30 screens integrated with over 60 client API routes.", "Managed deadlines and incremental deliveries remotely in direct client communication; the partnership led to a full-time role at Umobi."]
+      "pt": ["Implementação de novas jornadas em Flutter para o app Revela Fácil (Fujioka), seguindo de perto o Figma e integrando autenticação e catálogo.", "Desenvolvimento completo de um app Flutter para uma startup de construção civil, conectando mais de 30 telas a mais de 60 endpoints.", "Entregas remotas e incrementais alinhadas diretamente com o cliente — trabalho que abriu caminho para minha entrada efetiva na Umobi."],
+      "en": ["Built new Flutter user flows for Fujioka's Revela Fácil app, matching Figma designs and wiring up auth and product APIs.", "Delivered a full Flutter app from scratch for a construction startup, connecting over 30 screens to more than 60 API endpoints.", "Managed remote, incremental deliveries in direct contact with the client — which led to joining Umobi full-time."]
     }
   },
   {
@@ -25,8 +25,8 @@
     "role": { "pt": "Desenvolvedor Web", "en": "Web Developer" },
     "period": { "start": "2024-03", "end": "2025-12" },
     "highlights": {
-      "pt": ["Manutenção evolutiva de sistemas web em Django e PostgreSQL, incluindo novas funcionalidades, correção de bugs e otimização de consultas.", "Implementação e consumo de APIs REST seguindo padrões de projeto e boas práticas de segurança.", "Desenvolvimento de apps Flutter para automatizar processos internos e documentação técnica com as áreas usuárias."],
-      "en": ["Maintained and evolved Django and PostgreSQL web systems, adding features, fixing bugs, and optimizing queries.", "Implemented and consumed REST APIs following design patterns and security best practices.", "Built Flutter apps to automate internal processes and produced technical documentation with stakeholder teams."]
+      "pt": ["Evolução de sistemas internos em Django e PostgreSQL, criando funcionalidades novas, corrigindo bugs e destravando consultas lentas.", "Desenvolvimento e integração de APIs REST para conectar diferentes módulos da fundação.", "Criação de aplicativos Flutter para substituir controles manuais da equipe, junto com a documentação e o levantamento de necessidades com quem usava os sistemas."],
+      "en": ["Maintained and expanded internal Django and PostgreSQL systems, shipping new features, fixing bugs, and speeding up slow queries.", "Built and integrated REST APIs connecting internal modules across the foundation.", "Created Flutter apps to replace manual team workflows, working directly with end users to gather requirements and write documentation."]
     }
   }
 ]
