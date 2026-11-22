@@ -1,0 +1,15 @@
+/* Only what the Next.js page gets from outside the blog's own CSS. */
+html {
+  /* The preview scrolls itself (no smooth scrolling fighting the sync). */
+  scroll-behavior: auto;
+}
+
+body {
+  min-height: 100vh;
+}
+
+/* Thin scrollbars, so the mobile width isn't eaten by one. */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(128 128 128 / 0.35) transparent;
+}
