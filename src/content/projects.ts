@@ -276,48 +276,6 @@ const projects: ProjectEntry[] = [
     gallery: memoraScreens,
   },
   {
-    id: "orbitarium",
-    title: { pt: "Orbitarium", en: "Orbitarium" },
-    year: "2026",
-    status: published,
-    summary: {
-      pt: "Plataforma de estudo que explica assuntos difíceis com aulas visuais, diagramas animados e pequenos simuladores.",
-      en: "A learning platform that explains tough topics through visual lessons, animated diagrams and interactive simulators.",
-    },
-    problem: {
-      pt: "Certos conceitos de computação e ciência são difíceis de visualizar só lendo texto parado — faz falta mexer nas variáveis e ver o que acontece na hora.",
-      en: "Many computing and science concepts are hard to grasp from static text alone — you really need to tweak the variables and see how things move.",
-    },
-    solution: {
-      pt: "Montei um formato de aulas interativas onde o texto caminha junto com diagramas animados, simuladores e perguntas rápidas, mantendo o conteúdo separado da estrutura visual.",
-      en: "I built an interactive lesson format where explanations sit alongside animated diagrams, simulators and quick quizzes, cleanly separating the lesson data from the visual components.",
-    },
-    role: {
-      pt: "Pensei na estrutura das aulas, criei os componentes visuais e desenvolvi o front-end.",
-      en: "Designed the lesson structure, built the visual components and developed the front end.",
-    },
-    result: {
-      pt: "No ar como demonstração pública, com uma base pronta para receber novas matérias sem precisar redesenhar telas.",
-      en: "Live as a public demo, built so new subjects and lessons can be plugged in without reworking the UI.",
-    },
-    highlights: {
-      pt: [
-        "Estrutura de aulas tipada em TypeScript para evitar erros de conteúdo",
-        "Simuladores e diagramas encaixados dinamicamente no meio da leitura",
-        "Checagem automática de todas as aulas antes de publicar",
-      ],
-      en: [
-        "TypeScript-validated lesson schema so broken content never ships",
-        "Simulators and diagrams slotted seamlessly into the reading flow",
-        "Automated pre-build checks across every lesson",
-      ],
-    },
-    stack: ["React 19", "TypeScript", "Vite", "Tailwind CSS", "Motion", "React Router"],
-    links: { site: "https://orbitarium-edu.netlify.app/", github: "https://github.com/matheusz-nied/Orbitarium" },
-    cover: orbitariumHome,
-    gallery: orbitariumGallery,
-  },
-  {
     id: "portfolio",
     title: { pt: "Portfólio + blogs", en: "Portfolio + blogs" },
     year: "2026",
@@ -348,7 +306,7 @@ const projects: ProjectEntry[] = [
     },
     stack: ["Next.js", "TypeScript", "next-intl", "Tailwind CSS", "Velite", "MDX"],
     links: {
-      site: "https://portfolio-dev-lake-pi.vercel.app/",
+      site: "https://theusz.dev/",
       github: "https://github.com/matheusz-nied/portfolio-dev",
     },
     cover: portfolioHome,
