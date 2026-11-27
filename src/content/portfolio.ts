@@ -15,7 +15,7 @@ const base = {
   email: "matheustae@hotmail.com",
   whatsapp: { number: "5562994395965", display: "+55 62 99439-5965" },
   social: [
-    { label: "GitHub", href: "https://github.com/matheusz-nied" },
+    { label: "GitHub", href: "https://github.com/theusz-dev" },
     { label: "LinkedIn", href: "https://www.linkedin.com/in/matheusz-nied/" },
     { label: "Instagram", href: "https://www.instagram.com/theusz.dev/" },
     { label: "X", href: "https://x.com/theusdev_" },
@@ -122,6 +122,6 @@ export const project = {
   },
   links: {
     demo: "https://orbit-portal.netlify.app/",
-    github: "https://github.com/matheusz-nied/orbit",
+    github: "https://github.com/theusz-dev/orbit",
   },
 } as const;

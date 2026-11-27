@@ -70,8 +70,8 @@ const memoraInfo = {
   place: "Memora · 2026",
   tools: ["DeepSeek", "Flutter", "Riverpod", "Drift"],
   links: {
-    demo: "https://matheusz-nied.github.io/Memora/",
-    github: "https://github.com/matheusz-nied/Memora",
+    demo: "https://theusz-dev.github.io/Memora/",
+    github: "https://github.com/theusz-dev/Memora",
   },
 };
 
